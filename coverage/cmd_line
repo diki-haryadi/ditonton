@@ -1,0 +1,1 @@
+genhtml coverage/test.info -o coverage --no-function-coverage --prefix /Users/ben/belajar/flutter-dicoding/submissions/flutter-expert/flutter-expert-project-tv-series
