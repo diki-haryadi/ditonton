@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test Date:</td>
-            <td class="headerValue">2025-03-04 15:31:02</td>
+            <td class="headerValue">2025-03-05 06:06:55</td>
             <td></td>
           </tr>
                   <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
@@ -61,22 +61,22 @@
 <span id="L3"><span class="lineNum">       3</span>              : abstract class Failure extends Equatable {</span>
 <span id="L4"><span class="lineNum">       4</span>              :   final String message;</span>
 <span id="L5"><span class="lineNum">       5</span>              : </span>
-<span id="L6"><span class="lineNum">       6</span> <span class="tlaGNC">           7 :   Failure(this.message);</span></span>
+<span id="L6"><span class="lineNum">       6</span> <span class="tlaGNC">          17 :   Failure(this.message);</span></span>
 <span id="L7"><span class="lineNum">       7</span>              : </span>
-<span id="L8"><span class="lineNum">       8</span> <span class="tlaGNC">           1 :   @override</span></span>
-<span id="L9"><span class="lineNum">       9</span> <span class="tlaGNC">           2 :   List&lt;Object&gt; get props =&gt; [message];</span></span>
+<span id="L8"><span class="lineNum">       8</span> <span class="tlaGNC">           6 :   @override</span></span>
+<span id="L9"><span class="lineNum">       9</span> <span class="tlaGNC">          12 :   List&lt;Object&gt; get props =&gt; [message];</span></span>
 <span id="L10"><span class="lineNum">      10</span>              : }</span>
 <span id="L11"><span class="lineNum">      11</span>              : </span>
 <span id="L12"><span class="lineNum">      12</span>              : class ServerFailure extends Failure {</span>
-<span id="L13"><span class="lineNum">      13</span> <span class="tlaGNC">          12 :   ServerFailure(String message) : super(message);</span></span>
+<span id="L13"><span class="lineNum">      13</span> <span class="tlaGNC">          32 :   ServerFailure(String message) : super(message);</span></span>
 <span id="L14"><span class="lineNum">      14</span>              : }</span>
 <span id="L15"><span class="lineNum">      15</span>              : </span>
 <span id="L16"><span class="lineNum">      16</span>              : class ConnectionFailure extends Failure {</span>
-<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">           2 :   ConnectionFailure(String message) : super(message);</span></span>
+<span id="L17"><span class="lineNum">      17</span> <span class="tlaGNC">           8 :   ConnectionFailure(String message) : super(message);</span></span>
 <span id="L18"><span class="lineNum">      18</span>              : }</span>
 <span id="L19"><span class="lineNum">      19</span>              : </span>
 <span id="L20"><span class="lineNum">      20</span>              : class DatabaseFailure extends Failure {</span>
-<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC">           6 :   DatabaseFailure(String message) : super(message);</span></span>
+<span id="L21"><span class="lineNum">      21</span> <span class="tlaGNC">          16 :   DatabaseFailure(String message) : super(message);</span></span>
 <span id="L22"><span class="lineNum">      22</span>              : }</span>
         </pre>
               </td>

@@ -1,0 +1,33 @@
+{
+  "page": 1,
+  "results": [
+    {
+      "backdrop_path": "/path3.jpg",
+      "genre_ids": [80, 18],
+      "id": 3,
+      "original_name": "Breaking Bad",
+      "overview": "A high school chemistry teacher turned methamphetamine manufacturer partners with a former student to secure his family's financial future as he battles terminal lung cancer.",
+      "popularity": 1543.876,
+      "poster_path": "/poster3.jpg",
+      "first_air_date": "2008-01-20",
+      "name": "Breaking Bad",
+      "vote_average": 9.2,
+      "vote_count": 8765
+    },
+    {
+      "backdrop_path": "/path4.jpg",
+      "genre_ids": [18, 10768],
+      "id": 4,
+      "original_name": "The Crown",
+      "overview": "The gripping, decades-spanning inside story of Her Majesty Queen Elizabeth II and the Prime Ministers who shaped Britain's post-war destiny.",
+      "popularity": 1234.567,
+      "poster_path": "/poster4.jpg",
+      "first_air_date": "2016-11-04",
+      "name": "The Crown",
+      "vote_average": 8.6,
+      "vote_count": 3456
+    }
+  ],
+  "total_pages": 1,
+  "total_results": 2
+}

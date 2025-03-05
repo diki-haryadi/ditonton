@@ -30,14 +30,14 @@ class DatabaseHelper {
 
     var db = await openDatabase(
       databasePath,
-      version: 2,
+      version: 3,
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
     return db;
   }
 
-  void _onCreate(Database db, int version) async {
+  Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE  $_tblWatchlist (
         id INTEGER PRIMARY KEY,
@@ -46,10 +46,21 @@ class DatabaseHelper {
         posterPath TEXT
       );
     ''');
+    
+    await db.execute('''
+      CREATE TABLE  $_tblTvSeriesWatchlist (
+        id INTEGER PRIMARY KEY,
+        name TEXT,
+        overview TEXT,
+        posterPath TEXT
+      );
+    ''');
   }
 
-  void _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    if (oldVersion < 2) {
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 3) {
+      // Ensure tv_series_watchlist table exists
+      await db.execute('DROP TABLE IF EXISTS $_tblTvSeriesWatchlist');
       await db.execute('''
         CREATE TABLE  $_tblTvSeriesWatchlist (
           id INTEGER PRIMARY KEY,

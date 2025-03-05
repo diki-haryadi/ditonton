@@ -65,6 +65,11 @@ class DetailContent extends StatelessWidget {
 
   DetailContent(this.series, this.recommendations, this.isAddedWatchlist);
 
+  // String _showGenres(List<Genre> genres) {
+  //   if (genres.isEmpty) return '';
+  //   return genres.map((genre) => genre.name).join(', ');
+  // }
+
   @override
   Widget build(BuildContext context) {
     return ListView(

@@ -1,0 +1,23 @@
+{
+  "page": 1,
+  "results": [
+    {
+      "backdrop_path": "/muth4OYamXf41G2evdrLEg8d3om.jpg",
+      "first_air_date": "2022-01-01",
+      "genre_ids": [14, 28],
+      "id": 557,
+      "name": "Spider-Man: The Series",
+      "origin_country": [
+        "US"
+      ],
+      "original_name": "Spider-Man: The Series",
+      "overview": "After being bitten by a genetically altered spider, nerdy high school student Peter Parker is endowed with amazing powers to become the Amazing superhero known as Spider-Man.",
+      "popularity": 60.441,
+      "poster_path": "/rweIrveL43TaxUN0akQEaAXL6x0.jpg",
+      "vote_average": 7.2,
+      "vote_count": 13507
+    }
+  ],
+  "total_pages": 1,
+  "total_results": 1
+}

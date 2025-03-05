@@ -36,13 +36,20 @@ class TvSeriesTable extends Equatable {
         'overview': overview,
       };
 
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'name': name,
+        'posterPath': posterPath,
+        'overview': overview,
+      };
+
   TvSeries toEntity() => TvSeries(
         id: id,
         name: name ?? '',
         posterPath: posterPath,
         overview: overview ?? '',
         backdropPath: null,
-        firstAirDate: '',
+        firstAirDate: null,
         genreIds: const [],
         originCountry: const [],
         originalLanguage: '',

@@ -1,0 +1,37 @@
+{
+  "page": 1,
+  "results": [
+    {
+      "backdrop_path": "/path1.jpg",
+      "genre_ids": [18, 10765],
+      "id": 1,
+      "original_name": "The Last of Us",
+      "overview": "Twenty years after modern civilization has been destroyed, Joel, a hardened survivor, is hired to smuggle Ellie, a 14-year-old girl, out of an oppressive quarantine zone.",
+      "popularity": 2000.321,
+      "poster_path": "/poster1.jpg",
+      "first_air_date": "2023-01-15",
+      "name": "The Last of Us",
+      "vote_average": 8.7,
+      "vote_count": 5234,
+      "origin_country": ["US"],
+      "original_language": "en"
+    },
+    {
+      "backdrop_path": "/path2.jpg",
+      "genre_ids": [10759, 10765],
+      "id": 2,
+      "original_name": "House of the Dragon",
+      "overview": "The prequel series finds the Targaryen dynasty at the absolute apex of its power, with more than 15 dragons under their yoke.",
+      "popularity": 1876.543,
+      "poster_path": "/poster2.jpg",
+      "first_air_date": "2022-08-21",
+      "name": "House of the Dragon",
+      "vote_average": 8.5,
+      "vote_count": 4321,
+      "origin_country": ["US"],
+      "original_language": "en"
+    }
+  ],
+  "total_pages": 1,
+  "total_results": 2
+}
