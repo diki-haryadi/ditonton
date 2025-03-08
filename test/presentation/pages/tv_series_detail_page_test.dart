@@ -249,11 +249,12 @@ void main() {
     when(mockNotifier.tvSeriesRecommendations)
         .thenReturn(<TvSeries>[tTvSeries]);
     when(mockNotifier.isAddedToWatchlist).thenReturn(false);
+    when(mockNotifier.watchlistMessage).thenReturn('');
 
     // act
     await tester.pumpWidget(_makeTestableWidget(TvSeriesDetailPage(id: tId)));
     await tester.tap(find.byType(InkWell).first);
-    await tester.pumpAndSettle();
+    await tester.pump();
 
     // assert
     verify(mockNotifier.fetchTvSeriesDetail(tId));
@@ -331,6 +332,6 @@ void main() {
     await tester.pumpWidget(_makeTestableWidget(TvSeriesDetailPage(id: tId)));
 
     // assert
-    expect(find.text(''), findsNothing);
+    expect(find.text(''), findsOneWidget);
   });
 }

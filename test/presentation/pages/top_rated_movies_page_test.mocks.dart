@@ -31,7 +31,7 @@ import 'package:mockito/src/dummies.dart' as _i6;
 class _FakeGetTopRatedMovies_0 extends _i1.SmartFake
     implements _i2.GetTopRatedMovies {
   _FakeGetTopRatedMovies_0(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+    : super(parent, parentInvocation);
 }
 
 /// A class which mocks [TopRatedMoviesNotifier].
@@ -44,34 +44,42 @@ class MockTopRatedMoviesNotifier extends _i1.Mock
   }
 
   @override
-  _i2.GetTopRatedMovies get getTopRatedMovies => (super.noSuchMethod(
-        Invocation.getter(#getTopRatedMovies),
-        returnValue: _FakeGetTopRatedMovies_0(
-          this,
-          Invocation.getter(#getTopRatedMovies),
-        ),
-      ) as _i2.GetTopRatedMovies);
+  _i2.GetTopRatedMovies get getTopRatedMovies =>
+      (super.noSuchMethod(
+            Invocation.getter(#getTopRatedMovies),
+            returnValue: _FakeGetTopRatedMovies_0(
+              this,
+              Invocation.getter(#getTopRatedMovies),
+            ),
+          )
+          as _i2.GetTopRatedMovies);
 
   @override
-  _i4.RequestState get state => (super.noSuchMethod(
-        Invocation.getter(#state),
-        returnValue: _i4.RequestState.Empty,
-      ) as _i4.RequestState);
+  _i4.RequestState get state =>
+      (super.noSuchMethod(
+            Invocation.getter(#state),
+            returnValue: _i4.RequestState.Empty,
+          )
+          as _i4.RequestState);
 
   @override
-  List<_i5.Movie> get movies => (super.noSuchMethod(
-        Invocation.getter(#movies),
-        returnValue: <_i5.Movie>[],
-      ) as List<_i5.Movie>);
+  List<_i5.Movie> get movies =>
+      (super.noSuchMethod(
+            Invocation.getter(#movies),
+            returnValue: <_i5.Movie>[],
+          )
+          as List<_i5.Movie>);
 
   @override
-  String get message => (super.noSuchMethod(
-        Invocation.getter(#message),
-        returnValue: _i6.dummyValue<String>(
-          this,
-          Invocation.getter(#message),
-        ),
-      ) as String);
+  String get message =>
+      (super.noSuchMethod(
+            Invocation.getter(#message),
+            returnValue: _i6.dummyValue<String>(
+              this,
+              Invocation.getter(#message),
+            ),
+          )
+          as String);
 
   @override
   bool get hasListeners =>
@@ -79,33 +87,35 @@ class MockTopRatedMoviesNotifier extends _i1.Mock
           as bool);
 
   @override
-  _i7.Future<void> fetchTopRatedMovies() => (super.noSuchMethod(
-        Invocation.method(#fetchTopRatedMovies, []),
-        returnValue: _i7.Future<void>.value(),
-        returnValueForMissingStub: _i7.Future<void>.value(),
-      ) as _i7.Future<void>);
+  _i7.Future<void> fetchTopRatedMovies() =>
+      (super.noSuchMethod(
+            Invocation.method(#fetchTopRatedMovies, []),
+            returnValue: _i7.Future<void>.value(),
+            returnValueForMissingStub: _i7.Future<void>.value(),
+          )
+          as _i7.Future<void>);
 
   @override
   void addListener(_i8.VoidCallback? listener) => super.noSuchMethod(
-        Invocation.method(#addListener, [listener]),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#addListener, [listener]),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void removeListener(_i8.VoidCallback? listener) => super.noSuchMethod(
-        Invocation.method(#removeListener, [listener]),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#removeListener, [listener]),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void dispose() => super.noSuchMethod(
-        Invocation.method(#dispose, []),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#dispose, []),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void notifyListeners() => super.noSuchMethod(
-        Invocation.method(#notifyListeners, []),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#notifyListeners, []),
+    returnValueForMissingStub: null,
+  );
 }

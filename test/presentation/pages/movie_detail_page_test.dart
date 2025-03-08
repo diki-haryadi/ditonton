@@ -30,8 +30,7 @@ void main() {
   }
 
   final tId = 1;
-
-  final tMovieDetail = MovieDetail(
+  final tMovie = MovieDetail(
     adult: false,
     backdropPath: 'backdropPath',
     genres: [Genre(id: 1, name: 'Action')],
@@ -42,84 +41,213 @@ void main() {
     releaseDate: 'releaseDate',
     runtime: 120,
     title: 'title',
-    voteAverage: 1,
+    voteAverage: 1.0,
     voteCount: 1,
   );
 
-  final tMovie = Movie(
-    adult: false,
-    backdropPath: 'backdropPath',
-    genreIds: [1, 2, 3],
-    id: 1,
-    originalTitle: 'originalTitle',
-    overview: 'overview',
-    popularity: 1,
-    posterPath: 'posterPath',
-    releaseDate: 'releaseDate',
-    title: 'title',
-    video: false,
-    voteAverage: 1,
-    voteCount: 1,
-  );
+  final tMovies = <Movie>[
+    Movie(
+      adult: false,
+      backdropPath: 'backdropPath',
+      genreIds: [1, 2, 3],
+      id: 1,
+      originalTitle: 'originalTitle',
+      overview: 'overview',
+      popularity: 1,
+      posterPath: 'posterPath',
+      releaseDate: 'releaseDate',
+      title: 'title',
+      video: false,
+      voteAverage: 1,
+      voteCount: 1,
+    )
+  ];
 
-  final tMovieList = <Movie>[tMovie];
-
-  testWidgets('should display center progress bar when movie detail is loading',
+  testWidgets(
+      'Watchlist button should display add icon when movie not added to watchlist',
       (WidgetTester tester) async {
-    // arrange
-    when(mockNotifier.movieState).thenReturn(RequestState.Loading);
-
-    // act
-    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: tId)));
-
-    // assert
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
-    expect(find.byType(DetailContent), findsNothing);
-  });
-
-  testWidgets('should display DetailContent when movie detail data is loaded',
-      (WidgetTester tester) async {
-    // arrange
     when(mockNotifier.movieState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.movie).thenReturn(tMovieDetail);
-    when(mockNotifier.movieRecommendations).thenReturn(tMovieList);
+    when(mockNotifier.movie).thenReturn(tMovie);
+    when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
+    when(mockNotifier.movieRecommendations).thenReturn(tMovies);
     when(mockNotifier.isAddedToWatchlist).thenReturn(false);
 
-    // act
-    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: tId)));
+    final watchlistButtonIcon = find.byIcon(Icons.add);
 
-    // assert
-    expect(find.byType(DetailContent), findsOneWidget);
-    expect(find.byType(CircularProgressIndicator), findsNothing);
+    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+
+    expect(watchlistButtonIcon, findsOneWidget);
   });
 
   testWidgets(
-      'should display text error message when movie detail data failed to load',
+      'Watchlist button should display check icon when movie is added to watchlist',
       (WidgetTester tester) async {
-    // arrange
+    when(mockNotifier.movieState).thenReturn(RequestState.Loaded);
+    when(mockNotifier.movie).thenReturn(tMovie);
+    when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
+    when(mockNotifier.movieRecommendations).thenReturn(tMovies);
+    when(mockNotifier.isAddedToWatchlist).thenReturn(true);
+
+    final watchlistButtonIcon = find.byIcon(Icons.check);
+
+    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+
+    expect(watchlistButtonIcon, findsOneWidget);
+  });
+
+  testWidgets(
+      'Watchlist button should display Snackbar when added to watchlist',
+      (WidgetTester tester) async {
+    when(mockNotifier.movieState).thenReturn(RequestState.Loaded);
+    when(mockNotifier.movie).thenReturn(tMovie);
+    when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
+    when(mockNotifier.movieRecommendations).thenReturn(tMovies);
+    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
+    when(mockNotifier.watchlistMessage)
+        .thenReturn(MovieDetailNotifier.watchlistAddSuccessMessage);
+
+    final watchlistButton = find.byType(FilledButton);
+
+    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+
+    expect(find.byIcon(Icons.add), findsOneWidget);
+
+    await tester.tap(watchlistButton);
+    await tester.pump();
+
+    expect(find.byType(SnackBar), findsOneWidget);
+    expect(find.text(MovieDetailNotifier.watchlistAddSuccessMessage),
+        findsOneWidget);
+  });
+
+  testWidgets(
+      'Watchlist button should display AlertDialog when add to watchlist failed',
+      (WidgetTester tester) async {
+    when(mockNotifier.movieState).thenReturn(RequestState.Loaded);
+    when(mockNotifier.movie).thenReturn(tMovie);
+    when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
+    when(mockNotifier.movieRecommendations).thenReturn(tMovies);
+    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
+    when(mockNotifier.watchlistMessage).thenReturn('Failed');
+
+    final watchlistButton = find.byType(FilledButton);
+
+    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+
+    expect(find.byIcon(Icons.add), findsOneWidget);
+
+    await tester.tap(watchlistButton);
+    await tester.pump();
+
+    expect(find.byType(AlertDialog), findsOneWidget);
+    expect(find.text('Failed'), findsOneWidget);
+  });
+
+  testWidgets('Should display CircularProgressIndicator when movie loading',
+      (WidgetTester tester) async {
+    when(mockNotifier.movieState).thenReturn(RequestState.Loading);
+
+    final circularProgressIndicatorFinder =
+        find.byType(CircularProgressIndicator);
+
+    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+
+    expect(circularProgressIndicatorFinder, findsOneWidget);
+  });
+
+  testWidgets('Should display error message when movie load fails',
+      (WidgetTester tester) async {
     when(mockNotifier.movieState).thenReturn(RequestState.Error);
     when(mockNotifier.message).thenReturn('Error message');
 
-    // act
-    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: tId)));
+    final errorMessageFinder = find.text('Error message');
 
-    // assert
-    expect(find.text('Error message'), findsOneWidget);
-    expect(find.byType(DetailContent), findsNothing);
-    expect(find.byType(CircularProgressIndicator), findsNothing);
+    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+
+    expect(errorMessageFinder, findsOneWidget);
   });
 
-  testWidgets(
-      'should call fetchMovieDetail and loadWatchlistStatus when initialized',
+  testWidgets('Should display recommendations when data is loaded',
       (WidgetTester tester) async {
-    // arrange
+    when(mockNotifier.movieState).thenReturn(RequestState.Loaded);
+    when(mockNotifier.movie).thenReturn(tMovie);
+    when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
+    when(mockNotifier.movieRecommendations).thenReturn(tMovies);
+    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
+
+    final recommendationsListFinder = find.byType(ListView);
+
+    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+
+    expect(recommendationsListFinder, findsOneWidget);
+  });
+
+  testWidgets('Should display error text when recommendations load fails',
+      (WidgetTester tester) async {
+    when(mockNotifier.movieState).thenReturn(RequestState.Loaded);
+    when(mockNotifier.movie).thenReturn(tMovie);
+    when(mockNotifier.recommendationState).thenReturn(RequestState.Error);
+    when(mockNotifier.movieRecommendations).thenReturn([]);
+    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
+    when(mockNotifier.message).thenReturn('Error loading recommendations');
+
+    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+
+    // Find the recommendations section header
+    await tester.pump();
+    expect(find.text('Recommendations'), findsOneWidget);
+    expect(find.text('Error loading recommendations'), findsOneWidget);
+  });
+
+  testWidgets('Should call fetchMovieDetail when initialized',
+      (WidgetTester tester) async {
     when(mockNotifier.movieState).thenReturn(RequestState.Loading);
 
-    // act
-    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: tId)));
+    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
 
-    // assert
-    verify(mockNotifier.fetchMovieDetail(tId));
-    verify(mockNotifier.loadWatchlistStatus(tId));
+    verify(mockNotifier.fetchMovieDetail(1));
+  });
+
+  testWidgets('Should call loadWatchlistStatus when initialized',
+      (WidgetTester tester) async {
+    when(mockNotifier.movieState).thenReturn(RequestState.Loading);
+
+    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+
+    verify(mockNotifier.loadWatchlistStatus(1));
+  });
+
+  testWidgets('Should display movie details when data is loaded',
+      (WidgetTester tester) async {
+    when(mockNotifier.movieState).thenReturn(RequestState.Loaded);
+    when(mockNotifier.movie).thenReturn(tMovie);
+    when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
+    when(mockNotifier.movieRecommendations).thenReturn(tMovies);
+    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
+
+    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+
+    expect(find.text('title'), findsOneWidget);
+    expect(find.text('overview'), findsOneWidget);
+    expect(find.text('Action'), findsWidgets);
+    expect(find.text('2h 0m'), findsOneWidget);
+  });
+
+  testWidgets('Back button should pop',
+      (WidgetTester tester) async {
+    when(mockNotifier.movieState).thenReturn(RequestState.Loaded);
+    when(mockNotifier.movie).thenReturn(tMovie);
+    when(mockNotifier.recommendationState).thenReturn(RequestState.Loaded);
+    when(mockNotifier.movieRecommendations).thenReturn(tMovies);
+    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
+
+    final backButton = find.byIcon(Icons.arrow_back);
+
+    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
+
+    expect(backButton, findsOneWidget);
+    
+    // Cannot test navigation pop in widget test without additional setup
+    // but we can verify the button exists
   });
 }

@@ -31,7 +31,7 @@ import 'package:mockito/src/dummies.dart' as _i6;
 class _FakeGetTopRatedTvSeries_0 extends _i1.SmartFake
     implements _i2.GetTopRatedTvSeries {
   _FakeGetTopRatedTvSeries_0(Object parent, Invocation parentInvocation)
-      : super(parent, parentInvocation);
+    : super(parent, parentInvocation);
 }
 
 /// A class which mocks [TopRatedTvSeriesNotifier].
@@ -44,34 +44,42 @@ class MockTopRatedTvSeriesNotifier extends _i1.Mock
   }
 
   @override
-  _i2.GetTopRatedTvSeries get getTopRatedTvSeries => (super.noSuchMethod(
-        Invocation.getter(#getTopRatedTvSeries),
-        returnValue: _FakeGetTopRatedTvSeries_0(
-          this,
-          Invocation.getter(#getTopRatedTvSeries),
-        ),
-      ) as _i2.GetTopRatedTvSeries);
+  _i2.GetTopRatedTvSeries get getTopRatedTvSeries =>
+      (super.noSuchMethod(
+            Invocation.getter(#getTopRatedTvSeries),
+            returnValue: _FakeGetTopRatedTvSeries_0(
+              this,
+              Invocation.getter(#getTopRatedTvSeries),
+            ),
+          )
+          as _i2.GetTopRatedTvSeries);
 
   @override
-  _i4.RequestState get state => (super.noSuchMethod(
-        Invocation.getter(#state),
-        returnValue: _i4.RequestState.Empty,
-      ) as _i4.RequestState);
+  _i4.RequestState get state =>
+      (super.noSuchMethod(
+            Invocation.getter(#state),
+            returnValue: _i4.RequestState.Empty,
+          )
+          as _i4.RequestState);
 
   @override
-  List<_i5.TvSeries> get tvSeries => (super.noSuchMethod(
-        Invocation.getter(#tvSeries),
-        returnValue: <_i5.TvSeries>[],
-      ) as List<_i5.TvSeries>);
+  List<_i5.TvSeries> get tvSeries =>
+      (super.noSuchMethod(
+            Invocation.getter(#tvSeries),
+            returnValue: <_i5.TvSeries>[],
+          )
+          as List<_i5.TvSeries>);
 
   @override
-  String get message => (super.noSuchMethod(
-        Invocation.getter(#message),
-        returnValue: _i6.dummyValue<String>(
-          this,
-          Invocation.getter(#message),
-        ),
-      ) as String);
+  String get message =>
+      (super.noSuchMethod(
+            Invocation.getter(#message),
+            returnValue: _i6.dummyValue<String>(
+              this,
+              Invocation.getter(#message),
+            ),
+          )
+          as String);
 
   @override
   bool get hasListeners =>
@@ -79,33 +87,35 @@ class MockTopRatedTvSeriesNotifier extends _i1.Mock
           as bool);
 
   @override
-  _i7.Future<void> fetchTopRatedTvSeries() => (super.noSuchMethod(
-        Invocation.method(#fetchTopRatedTvSeries, []),
-        returnValue: _i7.Future<void>.value(),
-        returnValueForMissingStub: _i7.Future<void>.value(),
-      ) as _i7.Future<void>);
+  _i7.Future<void> fetchTopRatedTvSeries() =>
+      (super.noSuchMethod(
+            Invocation.method(#fetchTopRatedTvSeries, []),
+            returnValue: _i7.Future<void>.value(),
+            returnValueForMissingStub: _i7.Future<void>.value(),
+          )
+          as _i7.Future<void>);
 
   @override
   void addListener(_i8.VoidCallback? listener) => super.noSuchMethod(
-        Invocation.method(#addListener, [listener]),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#addListener, [listener]),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void removeListener(_i8.VoidCallback? listener) => super.noSuchMethod(
-        Invocation.method(#removeListener, [listener]),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#removeListener, [listener]),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void dispose() => super.noSuchMethod(
-        Invocation.method(#dispose, []),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#dispose, []),
+    returnValueForMissingStub: null,
+  );
 
   @override
   void notifyListeners() => super.noSuchMethod(
-        Invocation.method(#notifyListeners, []),
-        returnValueForMissingStub: null,
-      );
+    Invocation.method(#notifyListeners, []),
+    returnValueForMissingStub: null,
+  );
 }
