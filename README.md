@@ -34,6 +34,22 @@ A Flutter application that showcases movies and TV series information, implement
 - Unit Testing
 - Widget Testing
 - Integration Testing
+- Firebase Analytics Integration
+- Firebase Crashlytics Integration
+
+## Firebase Integration
+
+### Analytics
+Firebase Analytics is integrated to track user behavior and app usage patterns, providing valuable insights for improving user experience.
+
+![Firebase Analytics Dashboard](firebase_analytics.png)
+*Screenshot of Firebase Analytics dashboard showing user engagement metrics*
+
+### Crashlytics
+Firebase Crashlytics helps monitor app stability by providing detailed crash reports and error tracking in real-time.
+
+![Firebase Crashlytics Dashboard](firebase_crashlytics.png)
+*Screenshot of Crashlytics dashboard displaying crash reports and stability metrics*
 
 ## Project Structure
 
