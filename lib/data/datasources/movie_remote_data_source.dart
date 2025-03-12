@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:ditonton/common/config.dart';
+import 'package:ditonton/common/ssl_pinning.dart';
 import 'package:ditonton/data/models/movie_detail_model.dart';
 import 'package:ditonton/data/models/movie_model.dart';
 import 'package:ditonton/data/models/movie_response.dart';
@@ -16,82 +19,156 @@ abstract class MovieRemoteDataSource {
 }
 
 class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
-  static const API_KEY = 'api_key=2174d146bb9c0eab47529b2e77d6b526';
-  static const BASE_URL = 'https://api.themoviedb.org/3';
-
   final http.Client client;
 
   MovieRemoteDataSourceImpl({required this.client});
 
   @override
   Future<List<MovieModel>> getNowPlayingMovies() async {
-    final response =
-        await client.get(Uri.parse('$BASE_URL/movie/now_playing?$API_KEY'));
+    try {
+      final url = AppConfig.getNowPlayingMoviesUrl();
+      
+      // Menggunakan custom get method dengan retry
+      final response = await _getWithRetry(url);
 
-    if (response.statusCode == 200) {
-      return MovieResponse.fromJson(json.decode(response.body)).movieList;
-    } else {
+      if (response.statusCode == 200) {
+        return MovieResponse.fromJson(json.decode(response.body)).movieList;
+      } else {
+        throw ServerException();
+      }
+    } on SocketException {
+      throw ConnectionFailureException('Failed to connect to the network');
+    } on http.ClientException {
+      throw ConnectionFailureException('Failed to connect to the server');
+    } catch (e) {
       throw ServerException();
     }
   }
 
   @override
   Future<MovieDetailResponse> getMovieDetail(int id) async {
-    final response =
-        await client.get(Uri.parse('$BASE_URL/movie/$id?$API_KEY'));
+    try {
+      final url = AppConfig.getMovieDetailUrl(id);
+      final response = await _getWithRetry(url);
 
-    if (response.statusCode == 200) {
-      return MovieDetailResponse.fromJson(json.decode(response.body));
-    } else {
+      if (response.statusCode == 200) {
+        return MovieDetailResponse.fromJson(json.decode(response.body));
+      } else {
+        throw ServerException();
+      }
+    } on SocketException {
+      throw ConnectionFailureException('Failed to connect to the network');
+    } on http.ClientException {
+      throw ConnectionFailureException('Failed to connect to the server');
+    } catch (e) {
       throw ServerException();
     }
   }
 
   @override
   Future<List<MovieModel>> getMovieRecommendations(int id) async {
-    final response = await client
-        .get(Uri.parse('$BASE_URL/movie/$id/recommendations?$API_KEY'));
+    try {
+      final url = AppConfig.getMovieRecommendationsUrl(id);
+      final response = await _getWithRetry(url);
 
-    if (response.statusCode == 200) {
-      return MovieResponse.fromJson(json.decode(response.body)).movieList;
-    } else {
+      if (response.statusCode == 200) {
+        return MovieResponse.fromJson(json.decode(response.body)).movieList;
+      } else {
+        throw ServerException();
+      }
+    } on SocketException {
+      throw ConnectionFailureException('Failed to connect to the network');
+    } on http.ClientException {
+      throw ConnectionFailureException('Failed to connect to the server');
+    } catch (e) {
       throw ServerException();
     }
   }
 
   @override
   Future<List<MovieModel>> getPopularMovies() async {
-    final response =
-        await client.get(Uri.parse('$BASE_URL/movie/popular?$API_KEY'));
+    try {
+      final url = AppConfig.getPopularMoviesUrl();
+      final response = await _getWithRetry(url);
 
-    if (response.statusCode == 200) {
-      return MovieResponse.fromJson(json.decode(response.body)).movieList;
-    } else {
+      if (response.statusCode == 200) {
+        return MovieResponse.fromJson(json.decode(response.body)).movieList;
+      } else {
+        throw ServerException();
+      }
+    } on SocketException {
+      throw ConnectionFailureException('Failed to connect to the network');
+    } on http.ClientException {
+      throw ConnectionFailureException('Failed to connect to the server'); 
+    } catch (e) {
       throw ServerException();
     }
   }
 
   @override
   Future<List<MovieModel>> getTopRatedMovies() async {
-    final response =
-        await client.get(Uri.parse('$BASE_URL/movie/top_rated?$API_KEY'));
+    try {
+      final url = AppConfig.getTopRatedMoviesUrl();
+      final response = await _getWithRetry(url);
 
-    if (response.statusCode == 200) {
-      return MovieResponse.fromJson(json.decode(response.body)).movieList;
-    } else {
+      if (response.statusCode == 200) {
+        return MovieResponse.fromJson(json.decode(response.body)).movieList;
+      } else {
+        throw ServerException();
+      }
+    } on SocketException {
+      throw ConnectionFailureException('Failed to connect to the network');
+    } on http.ClientException {
+      throw ConnectionFailureException('Failed to connect to the server');
+    } catch (e) {
       throw ServerException();
     }
   }
 
   @override
   Future<List<MovieModel>> searchMovies(String query) async {
-    final response = await client
-        .get(Uri.parse('$BASE_URL/search/movie?$API_KEY&query=$query'));
+    try {
+      final url = AppConfig.searchMoviesUrl(query);
+      final response = await _getWithRetry(url);
 
-    if (response.statusCode == 200) {
-      return MovieResponse.fromJson(json.decode(response.body)).movieList;
-    } else {
+      if (response.statusCode == 200) {
+        return MovieResponse.fromJson(json.decode(response.body)).movieList;
+      } else {
+        throw ServerException();
+      }
+    } on SocketException {
+      throw ConnectionFailureException('Failed to connect to the network');
+    } on http.ClientException {
+      throw ConnectionFailureException('Failed to connect to the server');
+    } catch (e) {
       throw ServerException();
     }
   }
+  
+  // Custom get method with retry logic
+  Future<http.Response> _getWithRetry(String url, {int maxRetries = 3}) async {
+    int retries = 0;
+    
+    while (retries < maxRetries) {
+      try {
+        final response = await client.get(Uri.parse(url));
+        return response;
+      } catch (e) {
+        retries++;
+        if (retries >= maxRetries) {
+          rethrow;
+        }
+        await Future.delayed(Duration(seconds: 1));
+      }
+    }
+    
+    throw SocketException('Failed to connect after $maxRetries retries');
+  }
+}
+
+// Custom exception for better error handling
+class ConnectionFailureException implements Exception {
+  final String message;
+  
+  ConnectionFailureException(this.message);
 }
