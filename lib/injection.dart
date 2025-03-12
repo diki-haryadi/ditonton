@@ -1,3 +1,4 @@
+import 'package:ditonton/common/ssl_pinning.dart';
 import 'package:ditonton/data/datasources/db/database_helper.dart';
 import 'package:ditonton/data/datasources/movie_local_data_source.dart';
 import 'package:ditonton/data/datasources/movie_remote_data_source.dart';
@@ -41,6 +42,7 @@ import 'package:ditonton/domain/usecases/remove_watchlist_tv_series.dart';
 import 'package:ditonton/domain/usecases/save_watchlist_tv_series.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_it/get_it.dart';
+import 'package:flutter/foundation.dart';
 
 final locator = GetIt.instance;
 
@@ -173,5 +175,12 @@ void init() {
   locator.registerLazySingleton<DatabaseHelper>(() => DatabaseHelper());
 
   // external
-  locator.registerLazySingleton(() => http.Client());
+  // Conditional HTTP client berdasarkan environment
+  if (kTestMode) {
+    // Gunakan standard HTTP client untuk testing
+    locator.registerLazySingleton<http.Client>(() => http.Client());
+  } else {
+    // Gunakan SSL pinned client untuk production
+    locator.registerLazySingleton<http.Client>(() => HttpSSLPinning.client);
+  }
 }
