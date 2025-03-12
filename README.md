@@ -1,52 +1,122 @@
-# a199-flutter-expert-project
+# Flutter Expert Project - TV Series
 
-Repository ini merupakan starter project submission kelas Flutter Expert Dicoding Indonesia.
+[![Codemagic build status](https://api.codemagic.io/apps/67cf783638f44e239997e550/67cf783638f44e239997e54f/status_badge.svg)](https://codemagic.io/app/67cf783638f44e239997e550/67cf783638f44e239997e54f/latest_build)
 
----
+A Flutter application that showcases movies and TV series information, implementing clean architecture principles and following Flutter best practices.
 
-## Tips Submission Awal
+## CI/CD Build Screenshot
 
-Pastikan untuk memeriksa kembali seluruh hasil testing pada submissionmu sebelum dikirimkan. Karena kriteria pada submission ini akan diperiksa setelah seluruh berkas testing berhasil dijalankan.
+![Codemagic Build Screenshot](build_codemagic.png)
+*Screenshot of successful build from Codemagic CI/CD pipeline*
 
+## Features
 
-## Tips Submission Akhir
+### Movies
+- Browse Now Playing movies
+- Discover Popular movies
+- View Top Rated movies
+- Search for specific movies
+- View detailed movie information
+- Add/Remove movies to/from Watchlist
 
-Jika kamu menerapkan modular pada project, Anda dapat memanfaatkan berkas `test.sh` pada repository ini. Berkas tersebut dapat mempermudah proses testing melalui *terminal* atau *command prompt*. Sebelumnya menjalankan berkas tersebut, ikuti beberapa langkah berikut:
-1. Install terlebih dahulu aplikasi sesuai dengan Operating System (OS) yang Anda gunakan.
-    - Bagi pengguna **Linux**, jalankan perintah berikut pada terminal.
-        ```
-        sudo apt-get update -qq -y
-        sudo apt-get install lcov -y
-        ```
-    
-    - Bagi pengguna **Mac**, jalankan perintah berikut pada terminal.
-        ```
-        brew install lcov
-        ```
-    - Bagi pengguna **Windows**, ikuti langkah berikut.
-        - Install [Chocolatey](https://chocolatey.org/install) pada komputermu.
-        - Setelah berhasil, install [lcov](https://community.chocolatey.org/packages/lcov) dengan menjalankan perintah berikut.
-            ```
-            choco install lcov
-            ```
-        - Kemudian cek **Environtment Variabel** pada kolom **System variabels** terdapat variabel GENTHTML dan LCOV_HOME. Jika tidak tersedia, Anda bisa menambahkan variabel baru dengan nilai seperti berikut.
-            | Variable | Value|
-            | ----------- | ----------- |
-            | GENTHTML | C:\ProgramData\chocolatey\lib\lcov\tools\bin\genhtml |
-            | LCOV_HOME | C:\ProgramData\chocolatey\lib\lcov\tools |
-        
-2. Untuk mempermudah proses verifikasi testing, jalankan perintah berikut.
-    ```
-    git init
-    ```
-3. Kemudian jalankan berkas `test.sh` dengan perintah berikut pada *terminal* atau *powershell*.
-    ```
-    test.sh
-    ```
-    atau
-    ```
-    ./test.sh
-    ```
-    Proses ini akan men-*generate* berkas `lcov.info` dan folder `coverage` terkait dengan laporan coverage.
-4. Tunggu proses testing selesai hingga muncul web terkait laporan coverage.
+### TV Series
+- Browse Now Playing TV series
+- Discover Popular TV series
+- View Top Rated TV series
+- Search for specific TV series
+- View detailed TV series information
+- Add/Remove TV series to/from Watchlist
+
+### Core Features
+- Clean Architecture Implementation
+- Dependency Injection
+- Local Data Persistence
+- Unit Testing
+- Widget Testing
+- Integration Testing
+
+## Project Structure
+
+```
+lib/
+├── common/          # Common utilities, constants, and exceptions
+├── data/            # Data layer implementation
+│   ├── datasources/ # Data sources implementation
+│   ├── models/      # Data models
+│   └── repositories/# Repository implementations
+├── domain/          # Domain layer with business logic
+│   ├── entities/    # Business entities
+│   ├── repositories/# Repository interfaces
+│   └── usecases/    # Use cases implementation
+└── presentation/    # Presentation layer
+    ├── pages/       # UI pages
+    ├── provider/    # State management
+    └── widgets/     # Reusable widgets
+```
+
+## Getting Started
+
+### Prerequisites
+- Flutter SDK
+- Dart SDK
+- Android Studio / VS Code
+- Android Emulator / iOS Simulator
+
+### Installation
+1. Clone this repository
+2. Navigate to the project directory
+3. Run `flutter pub get` to install dependencies
+4. Run `flutter run` to start the application
+
+## Testing
+
+This project includes comprehensive testing coverage. To run the tests:
+
+### For All Tests
+Use the provided test script:
+```bash
+./test.sh
+```
+
+This will:
+- Run all unit tests
+- Run widget tests
+- Generate coverage reports
+
+### Prerequisites for Testing
+
+Install lcov based on your operating system:
+
+- **Linux**:
+  ```bash
+  sudo apt-get update -qq -y
+  sudo apt-get install lcov -y
+  ```
+
+- **macOS**:
+  ```bash
+  brew install lcov
+  ```
+
+- **Windows**:
+  1. Install [Chocolatey](https://chocolatey.org/install)
+  2. Run:
+     ```bash
+     choco install lcov
+     ```
+  3. Set environment variables:
+     - GENTHTML = C:\ProgramData\chocolatey\lib\lcov\tools\bin\genhtml
+     - LCOV_HOME = C:\ProgramData\chocolatey\lib\lcov\tools
+
+## Development Guidelines
+
+- Follow clean architecture principles
+- Write tests for new features
+- Maintain code coverage
+- Follow Flutter best practices
+- Use meaningful commit messages
+
+## License
+
+This project is part of the Flutter Expert course by Dicoding Indonesia.
 
