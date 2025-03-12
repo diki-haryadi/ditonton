@@ -9,6 +9,7 @@ import 'package:ditonton/domain/entities/movie_detail.dart';
 import 'package:ditonton/domain/repositories/movie_repository.dart';
 import 'package:ditonton/common/exception.dart';
 import 'package:ditonton/common/failure.dart';
+import 'package:http/http.dart' as http;
 
 class MovieRepositoryImpl implements MovieRepository {
   final MovieRemoteDataSource remoteDataSource;
@@ -25,9 +26,15 @@ class MovieRepositoryImpl implements MovieRepository {
       final result = await remoteDataSource.getNowPlayingMovies();
       return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
-      return Left(ServerFailure(''));
+      return Left(ServerFailure('Server error occurred'));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    } on http.ClientException {
+      return Left(ConnectionFailure('Network connection problem'));
+    } on ConnectionFailureException catch (e) {
+      return Left(ConnectionFailure(e.message));
+    } catch (e) {
+      return Left(ConnectionFailure('Unexpected error: ${e.toString()}'));
     }
   }
 
@@ -37,9 +44,15 @@ class MovieRepositoryImpl implements MovieRepository {
       final result = await remoteDataSource.getMovieDetail(id);
       return Right(result.toEntity());
     } on ServerException {
-      return Left(ServerFailure(''));
+      return Left(ServerFailure('Server error occurred'));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    } on http.ClientException {
+      return Left(ConnectionFailure('Network connection problem'));
+    } on ConnectionFailureException catch (e) {
+      return Left(ConnectionFailure(e.message));
+    } catch (e) {
+      return Left(ConnectionFailure('Unexpected error: ${e.toString()}'));
     }
   }
 
@@ -49,9 +62,15 @@ class MovieRepositoryImpl implements MovieRepository {
       final result = await remoteDataSource.getMovieRecommendations(id);
       return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
-      return Left(ServerFailure(''));
+      return Left(ServerFailure('Server error occurred'));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    } on http.ClientException {
+      return Left(ConnectionFailure('Network connection problem'));
+    } on ConnectionFailureException catch (e) {
+      return Left(ConnectionFailure(e.message));
+    } catch (e) {
+      return Left(ConnectionFailure('Unexpected error: ${e.toString()}'));
     }
   }
 
@@ -61,9 +80,15 @@ class MovieRepositoryImpl implements MovieRepository {
       final result = await remoteDataSource.getPopularMovies();
       return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
-      return Left(ServerFailure(''));
+      return Left(ServerFailure('Server error occurred'));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    } on http.ClientException {
+      return Left(ConnectionFailure('Network connection problem'));
+    } on ConnectionFailureException catch (e) {
+      return Left(ConnectionFailure(e.message));
+    } catch (e) {
+      return Left(ConnectionFailure('Unexpected error: ${e.toString()}'));
     }
   }
 
@@ -73,9 +98,15 @@ class MovieRepositoryImpl implements MovieRepository {
       final result = await remoteDataSource.getTopRatedMovies();
       return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
-      return Left(ServerFailure(''));
+      return Left(ServerFailure('Server error occurred'));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    } on http.ClientException {
+      return Left(ConnectionFailure('Network connection problem'));
+    } on ConnectionFailureException catch (e) {
+      return Left(ConnectionFailure(e.message));
+    } catch (e) {
+      return Left(ConnectionFailure('Unexpected error: ${e.toString()}'));
     }
   }
 
@@ -85,9 +116,15 @@ class MovieRepositoryImpl implements MovieRepository {
       final result = await remoteDataSource.searchMovies(query);
       return Right(result.map((model) => model.toEntity()).toList());
     } on ServerException {
-      return Left(ServerFailure(''));
+      return Left(ServerFailure('Server error occurred'));
     } on SocketException {
       return Left(ConnectionFailure('Failed to connect to the network'));
+    } on http.ClientException {
+      return Left(ConnectionFailure('Network connection problem'));
+    } on ConnectionFailureException catch (e) {
+      return Left(ConnectionFailure(e.message));
+    } catch (e) {
+      return Left(ConnectionFailure('Unexpected error: ${e.toString()}'));
     }
   }
 
@@ -100,7 +137,7 @@ class MovieRepositoryImpl implements MovieRepository {
     } on DatabaseException catch (e) {
       return Left(DatabaseFailure(e.message));
     } catch (e) {
-      throw e;
+      return Left(DatabaseFailure(e.toString()));
     }
   }
 
@@ -112,6 +149,8 @@ class MovieRepositoryImpl implements MovieRepository {
       return Right(result);
     } on DatabaseException catch (e) {
       return Left(DatabaseFailure(e.message));
+    } catch (e) {
+      return Left(DatabaseFailure(e.toString()));
     }
   }
 
@@ -123,7 +162,13 @@ class MovieRepositoryImpl implements MovieRepository {
 
   @override
   Future<Either<Failure, List<Movie>>> getWatchlistMovies() async {
-    final result = await localDataSource.getWatchlistMovies();
-    return Right(result.map((data) => data.toEntity()).toList());
+    try {
+      final result = await localDataSource.getWatchlistMovies();
+      return Right(result.map((data) => data.toEntity()).toList());
+    } on DatabaseException catch (e) {
+      return Left(DatabaseFailure(e.message));
+    } catch (e) {
+      return Left(DatabaseFailure(e.toString()));
+    }
   }
 }
