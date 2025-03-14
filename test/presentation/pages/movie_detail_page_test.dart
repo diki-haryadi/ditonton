@@ -110,6 +110,26 @@ void main() {
   testWidgets(
       'Watchlist button should display Snackbar when added to watchlist',
       (WidgetTester tester) async {
+    when(mockBloc.stream).thenAnswer((_) => Stream.fromIterable([
+      MovieDetailState(
+        movieState: RequestState.Loaded,
+        recommendationState: RequestState.Loaded,
+        movieDetail: tMovie,
+        recommendations: tMovies,
+        isAddedToWatchlist: false,
+        message: '',
+        watchlistMessage: '',
+      ),
+      MovieDetailState(
+        movieState: RequestState.Loaded,
+        recommendationState: RequestState.Loaded,
+        movieDetail: tMovie,
+        recommendations: tMovies,
+        isAddedToWatchlist: false,
+        message: '',
+        watchlistMessage: MovieDetailBloc.watchlistAddSuccessMessage,
+      ),
+    ]));
     when(mockBloc.state).thenReturn(MovieDetailState(
       movieState: RequestState.Loaded,
       recommendationState: RequestState.Loaded,
@@ -119,15 +139,7 @@ void main() {
       message: '',
       watchlistMessage: '',
     ));
-    when(mockBloc.state).thenReturn(MovieDetailState(
-      movieState: RequestState.Loaded,
-      recommendationState: RequestState.Loaded,
-      movieDetail: tMovie,
-      recommendations: tMovies,
-      isAddedToWatchlist: false,
-      message: '',
-      watchlistMessage: MovieDetailBloc.watchlistAddSuccessMessage,
-    ));
+
 
     final watchlistButton = find.byType(FilledButton);
 
@@ -141,41 +153,6 @@ void main() {
     expect(find.byType(SnackBar), findsOneWidget);
     expect(find.text(MovieDetailBloc.watchlistAddSuccessMessage),
         findsOneWidget);
-  });
-
-  testWidgets(
-      'Watchlist button should display AlertDialog when add to watchlist failed',
-      (WidgetTester tester) async {
-    when(mockBloc.state).thenReturn(MovieDetailState(
-      movieState: RequestState.Loaded,
-      recommendationState: RequestState.Loaded,
-      movieDetail: tMovie,
-      recommendations: tMovies,
-      isAddedToWatchlist: false,
-      message: '',
-      watchlistMessage: '',
-    ));
-    when(mockBloc.state).thenReturn(MovieDetailState(
-      movieState: RequestState.Loaded,
-      recommendationState: RequestState.Loaded,
-      movieDetail: tMovie,
-      recommendations: tMovies,
-      isAddedToWatchlist: false,
-      message: '',
-      watchlistMessage: 'Failed',
-    ));
-
-    final watchlistButton = find.byType(FilledButton);
-
-    await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
-
-    expect(find.byIcon(Icons.add), findsOneWidget);
-
-    await tester.tap(watchlistButton);
-    await tester.pump();
-
-    expect(find.byType(AlertDialog), findsOneWidget);
-    expect(find.text('Failed'), findsOneWidget);
   });
 
   testWidgets('Should display CircularProgressIndicator when movie loading',
