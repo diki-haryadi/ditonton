@@ -34,7 +34,27 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<MovieDetailBloc, MovieDetailState>(
+      body: BlocConsumer<MovieDetailBloc, MovieDetailState>(
+        listenWhen: (previous, current) =>
+        previous.watchlistMessage != current.watchlistMessage &&
+            current.watchlistMessage.isNotEmpty,
+        listener: (context, state) {
+          final message = state.watchlistMessage;
+          if (message == MovieDetailBloc.watchlistAddSuccessMessage ||
+              message == MovieDetailBloc.watchlistRemoveSuccessMessage) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(message)));
+          } else {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  content: Text(message),
+                );
+              },
+            );
+          }
+        },
         builder: (context, state) {
           if (state.movieState == RequestState.Loading) {
             return Center(
@@ -112,7 +132,7 @@ class DetailContent extends StatelessWidget {
                               style: kHeading5,
                             ),
                             FilledButton(
-                              onPressed: () async {
+                              onPressed: () {
                                 if (!isAddedWatchlist) {
                                   context.read<MovieDetailBloc>().add(
                                       AddMovieToWatchlist(movie));
@@ -120,26 +140,7 @@ class DetailContent extends StatelessWidget {
                                   context.read<MovieDetailBloc>().add(
                                       RemoveMovieFromWatchlist(movie));
                                 }
-
-                                final state = context.read<MovieDetailBloc>().state;
-                                final message = state.watchlistMessage;
-
-                                if (message ==
-                                        MovieDetailBloc.watchlistAddSuccessMessage ||
-                                    message ==
-                                        MovieDetailBloc.watchlistRemoveSuccessMessage) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text(message)));
-                                } else {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        content: Text(message),
-                                      );
-                                    },
-                                  );
-                                }
+                                // We no longer need to check state here as we're using BlocConsumer
                               },
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,

@@ -34,7 +34,27 @@ class _TvSeriesDetailPageState extends State<TvSeriesDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<TvSeriesDetailBloc, TvSeriesDetailState>(
+      body: BlocConsumer<TvSeriesDetailBloc, TvSeriesDetailState>(
+        listenWhen: (previous, current) =>
+        previous.watchlistMessage != current.watchlistMessage &&
+            current.watchlistMessage.isNotEmpty,
+        listener: (context, state) {
+          final message = state.watchlistMessage;
+          if (message == TvSeriesDetailBloc.watchlistAddSuccessMessage ||
+              message == TvSeriesDetailBloc.watchlistRemoveSuccessMessage) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(message)));
+          } else {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  content: Text(message),
+                );
+              },
+            );
+          }
+        },
         builder: (context, state) {
           if (state.tvSeriesState == RequestState.Loading) {
             return Center(
@@ -95,10 +115,10 @@ class DetailContent extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Colors.black87,
                       borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(16)),
+                      BorderRadius.vertical(top: Radius.circular(16)),
                     ),
                     padding:
-                        const EdgeInsets.only(left: 16, top: 16, right: 16),
+                    const EdgeInsets.only(left: 16, top: 16, right: 16),
                     child: Stack(
                       children: [
                         Container(
@@ -111,14 +131,14 @@ class DetailContent extends StatelessWidget {
                                 Text(
                                   series.name,
                                   style:
-                                      kHeading5.copyWith(color: Colors.white),
+                                  kHeading5.copyWith(color: Colors.white),
                                 ),
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: kMikadoYellow,
                                     foregroundColor: Colors.black,
                                   ),
-                                  onPressed: () async {
+                                  onPressed: () {
                                     if (!isAddedWatchlist) {
                                       context.read<TvSeriesDetailBloc>().add(
                                           AddTvSeriesToWatchlist(series));
@@ -126,31 +146,16 @@ class DetailContent extends StatelessWidget {
                                       context.read<TvSeriesDetailBloc>().add(
                                           RemoveTvSeriesFromWatchlist(series));
                                     }
-
-                                    final state = context.read<TvSeriesDetailBloc>().state;
-                                    final message = state.watchlistMessage;
-                                    print(message);
-                                    if (message ==
-                                            TvSeriesDetailBloc.watchlistAddSuccessMessage ||
-                                        message ==
-                                            TvSeriesDetailBloc.watchlistRemoveSuccessMessage) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                              SnackBar(content: Text(message)));
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                          SnackBar(content: Text(message)));
-                                    }
+                                    // We no longer need to check state here as we're using BlocConsumer
                                   },
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      !isAddedWatchlist
+                                      isAddedWatchlist
                                           ? Icon(Icons.check,
-                                              color: Colors.black)
+                                          color: Colors.black)
                                           : Icon(Icons.add,
-                                              color: Colors.black),
+                                          color: Colors.black),
                                       Text('Watchlist'),
                                     ],
                                   ),
@@ -177,7 +182,7 @@ class DetailContent extends StatelessWidget {
                                 Text(
                                   'Overview',
                                   style:
-                                      kHeading6.copyWith(color: Colors.white),
+                                  kHeading6.copyWith(color: Colors.white),
                                 ),
                                 Text(
                                   series.overview,
@@ -187,7 +192,7 @@ class DetailContent extends StatelessWidget {
                                 Text(
                                   'Recommendations',
                                   style:
-                                      kHeading6.copyWith(color: Colors.white),
+                                  kHeading6.copyWith(color: Colors.white),
                                 ),
                                 BlocBuilder<TvSeriesDetailBloc, TvSeriesDetailState>(
                                   builder: (context, state) {
@@ -223,15 +228,15 @@ class DetailContent extends StatelessWidget {
                                                   ),
                                                   child: CachedNetworkImage(
                                                     imageUrl:
-                                                        '$BASE_IMAGE_URL${series.posterPath}',
+                                                    '$BASE_IMAGE_URL${series.posterPath}',
                                                     placeholder: (context, url) =>
                                                         Center(
-                                                      child:
+                                                          child:
                                                           CircularProgressIndicator(),
-                                                    ),
+                                                        ),
                                                     errorWidget:
                                                         (context, url, error) =>
-                                                            Icon(Icons.error),
+                                                        Icon(Icons.error),
                                                   ),
                                                 ),
                                               ),

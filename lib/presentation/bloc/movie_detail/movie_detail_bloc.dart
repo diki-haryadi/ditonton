@@ -102,11 +102,12 @@ class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
       },
     );
     
-    emit(state.copyWith(watchlistMessage: message));
-    
     // Update watchlist status
     final status = await getWatchListStatus.execute(event.movieDetail.id);
-    emit(state.copyWith(isAddedToWatchlist: status));
+    emit(state.copyWith(
+      watchlistMessage: message,
+      isAddedToWatchlist: status,
+    ));
   }
 
   Future<void> _onRemoveMovieFromWatchlist(
@@ -125,11 +126,12 @@ class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
       },
     );
     print(message);
-    emit(state.copyWith(watchlistMessage: message));
-    
     // Update watchlist status
     final status = await getWatchListStatus.execute(event.movieDetail.id);
-    emit(state.copyWith(isAddedToWatchlist: status));
+    emit(state.copyWith(
+      watchlistMessage: message,
+      isAddedToWatchlist: status,
+    ));
   }
 
   Future<void> _onLoadWatchlistStatus(
