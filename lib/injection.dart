@@ -31,7 +31,6 @@ import 'package:ditonton/domain/usecases/remove_watchlist_tv_series.dart';
 import 'package:ditonton/domain/usecases/save_watchlist_tv_series.dart';
 import 'package:http/http.dart' as http;
 import 'package:get_it/get_it.dart';
-import 'package:flutter/foundation.dart';
 
 // Import BLoC files
 import 'package:ditonton/presentation/bloc/movie_list/movie_list_bloc.dart';

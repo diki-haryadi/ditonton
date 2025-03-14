@@ -122,8 +122,7 @@ void main() {
 
     test('should return list of tv series when response code is 200', () async {
       // arrange
-      when(mockHttpClient
-              .get(Uri.parse(AppConfig.searchTvSeriesUrl(tQuery))))
+      when(mockHttpClient.get(Uri.parse(AppConfig.searchTvSeriesUrl(tQuery))))
           .thenAnswer((_) async => http.Response(
               readJson('dummy_data/search_game_of_thrones.json'), 200));
       // act
@@ -135,8 +134,7 @@ void main() {
     test('should throw ServerException when response code is other than 200',
         () async {
       // arrange
-      when(mockHttpClient
-              .get(Uri.parse(AppConfig.searchTvSeriesUrl(tQuery))))
+      when(mockHttpClient.get(Uri.parse(AppConfig.searchTvSeriesUrl(tQuery))))
           .thenAnswer((_) async => http.Response('Not Found', 404));
       // act
       final call = dataSource.searchTvSeries(tQuery);

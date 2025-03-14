@@ -50,7 +50,8 @@ void main() {
   });
 
   group('Remove Watchlist', () {
-    test('should return success message when remove from database is successful',
+    test(
+        'should return success message when remove from database is successful',
         () async {
       // arrange
       when(mockDatabaseHelper.removeWatchlist(testMovieTable))

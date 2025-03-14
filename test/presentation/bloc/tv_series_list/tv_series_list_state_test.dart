@@ -43,7 +43,7 @@ void main() {
         voteAverage: 1,
         voteCount: 1,
       );
-      
+
       final state = TvSeriesListState(
         nowPlayingState: RequestState.Loaded,
         popularTvSeriesState: RequestState.Loaded,
@@ -53,7 +53,7 @@ void main() {
         topRatedTvSeries: [tvSeries],
         message: 'Message',
       );
-      
+
       expect(state.props, [
         RequestState.Loaded,
         RequestState.Loaded,
@@ -65,7 +65,9 @@ void main() {
       ]);
     });
 
-    test('copyWith should create a new object with updated values when parameters are passed', () {
+    test(
+        'copyWith should create a new object with updated values when parameters are passed',
+        () {
       final tvSeries = TvSeries(
         backdropPath: 'backdropPath',
         firstAirDate: 'firstAirDate',
@@ -81,7 +83,7 @@ void main() {
         voteAverage: 1,
         voteCount: 1,
       );
-      
+
       final originalState = TvSeriesListState.initial();
       final copiedState = originalState.copyWith(
         nowPlayingState: RequestState.Loaded,
@@ -92,7 +94,7 @@ void main() {
         topRatedTvSeries: [tvSeries],
         message: 'Message',
       );
-      
+
       expect(copiedState, isNot(originalState));
       expect(copiedState.nowPlayingState, RequestState.Loaded);
       expect(copiedState.popularTvSeriesState, RequestState.Loaded);

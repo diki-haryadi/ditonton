@@ -133,7 +133,8 @@ class MyApp extends StatelessWidget {
                 settings: settings,
               );
             case NowPlayingTvSeriesPage.ROUTE_NAME:
-              return CupertinoPageRoute(builder: (_) => NowPlayingTvSeriesPage());
+              return CupertinoPageRoute(
+                  builder: (_) => NowPlayingTvSeriesPage());
             case PopularTvSeriesPage.ROUTE_NAME:
               return CupertinoPageRoute(builder: (_) => PopularTvSeriesPage());
             case TopRatedTvSeriesPage.ROUTE_NAME:

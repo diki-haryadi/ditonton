@@ -45,7 +45,8 @@ class TvSeriesListState extends Equatable {
     return TvSeriesListState(
       nowPlayingState: nowPlayingState ?? this.nowPlayingState,
       popularTvSeriesState: popularTvSeriesState ?? this.popularTvSeriesState,
-      topRatedTvSeriesState: topRatedTvSeriesState ?? this.topRatedTvSeriesState,
+      topRatedTvSeriesState:
+          topRatedTvSeriesState ?? this.topRatedTvSeriesState,
       nowPlayingTvSeries: nowPlayingTvSeries ?? this.nowPlayingTvSeries,
       popularTvSeries: popularTvSeries ?? this.popularTvSeries,
       topRatedTvSeries: topRatedTvSeries ?? this.topRatedTvSeries,

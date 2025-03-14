@@ -30,7 +30,7 @@ void main() {
         watchlistTvSeries: [testWatchlistTvSeries],
         message: 'Message',
       );
-      
+
       expect(state.props, [
         RequestState.Loaded,
         [testWatchlistTvSeries],
@@ -38,14 +38,16 @@ void main() {
       ]);
     });
 
-    test('copyWith should create a new object with updated values when parameters are passed', () {
+    test(
+        'copyWith should create a new object with updated values when parameters are passed',
+        () {
       final originalState = WatchlistTvSeriesState.initial();
       final copiedState = originalState.copyWith(
         watchlistState: RequestState.Loaded,
         watchlistTvSeries: [testWatchlistTvSeries],
         message: 'Message',
       );
-      
+
       expect(copiedState, isNot(originalState));
       expect(copiedState.watchlistState, RequestState.Loaded);
       expect(copiedState.watchlistTvSeries, [testWatchlistTvSeries]);

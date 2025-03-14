@@ -13,20 +13,21 @@ class HttpSSLPinning {
       _clientInstance = http.Client();
       return;
     }
-    
+
     _clientInstance = await _setupSecureClient();
   }
 
   static Future<http.Client> _setupSecureClient() async {
     final context = SecurityContext(withTrustedRoots: false);
-    
+
     try {
       // Untuk testing, skip loading certificate jika dalam test environment
       if (!kTestMode) {
         try {
-          final bytes = (await rootBundle.load('certificates/themoviedb.org.pem'))
-              .buffer
-              .asUint8List();
+          final bytes =
+              (await rootBundle.load('certificates/themoviedb.org.pem'))
+                  .buffer
+                  .asUint8List();
           context.setTrustedCertificatesBytes(bytes);
           print('Certificate setup successfully');
         } catch (e) {
@@ -51,20 +52,20 @@ class HttpSSLPinning {
     }
 
     HttpClient httpClient = HttpClient(context: context);
-    
+
     // Set timeout
     httpClient.connectionTimeout = const Duration(seconds: 15);
-    
+
     // Handle bad certificate
     httpClient.badCertificateCallback =
         (X509Certificate cert, String host, int port) {
-          print('Bad certificate check for $host:$port');
-          return false;
-        };
-    
+      print('Bad certificate check for $host:$port');
+      return false;
+    };
+
     return IOClient(httpClient);
   }
-  
+
   // Method untuk melakukan retry jika koneksi gagal
   static Future<http.Response> get(
     String url, {
@@ -72,32 +73,32 @@ class HttpSSLPinning {
     int maxRetries = 3,
   }) async {
     int retries = 0;
-    
+
     while (retries < maxRetries) {
       try {
         final response = await client.get(
           Uri.parse(url),
           headers: headers,
         );
-        
+
         if (response.statusCode == 200) {
           return response;
         }
-        
+
         retries++;
         await Future.delayed(Duration(seconds: 1));
       } catch (e) {
         print('Error in HTTP GET ($retries): $e');
         retries++;
-        
+
         if (retries >= maxRetries) {
           rethrow;
         }
-        
+
         await Future.delayed(Duration(seconds: 1));
       }
     }
-    
+
     // Jika masih tidak berhasil setelah retry, throw exception
     throw SocketException('Failed to connect after $maxRetries retries');
   }

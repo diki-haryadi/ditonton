@@ -110,7 +110,7 @@ final testWatchlistTvSeries = TvSeries(
   posterPath: '/posterPath',
   overview: 'overview',
   backdropPath: null,
-  firstAirDate: null, 
+  firstAirDate: null,
   genreIds: const [],
   originCountry: const [],
   originalLanguage: '',

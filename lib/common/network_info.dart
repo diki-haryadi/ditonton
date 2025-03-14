@@ -6,15 +6,15 @@ abstract class NetworkInfo {
 
 class NetworkInfoImpl implements NetworkInfo {
   final String lookupAddress;
-  
+
   NetworkInfoImpl({this.lookupAddress = 'google.com'});
-  
+
   @override
   Future<bool> get isConnected async {
     try {
       // Lookup DNS to check internet connection
       final result = await InternetAddress.lookup(lookupAddress);
-      
+
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         return true;
       }

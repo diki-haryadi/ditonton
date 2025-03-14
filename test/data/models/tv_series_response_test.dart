@@ -23,7 +23,8 @@ void main() {
     voteCount: 200,
   );
 
-  final tTvSeriesResponseModel = TvSeriesResponse(tvSeriesList: <TvSeriesModel>[tTvSeriesModel]);
+  final tTvSeriesResponseModel =
+      TvSeriesResponse(tvSeriesList: <TvSeriesModel>[tTvSeriesModel]);
 
   group('fromJson', () {
     test('should return a valid model from JSON', () async {

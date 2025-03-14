@@ -10,7 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-class MockTvSeriesListBloc extends MockBloc<TvSeriesListEvent, TvSeriesListState>
+class MockTvSeriesListBloc
+    extends MockBloc<TvSeriesListEvent, TvSeriesListState>
     implements TvSeriesListBloc {}
 
 void main() {

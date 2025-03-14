@@ -72,10 +72,7 @@ void main() {
       "backdrop_path": "/path.jpg",
       "budget": 100000000,
       "genres": [
-        {
-          "id": 1,
-          "name": "Action"
-        }
+        {"id": 1, "name": "Action"}
       ],
       "homepage": "https://example.com",
       "id": 1,

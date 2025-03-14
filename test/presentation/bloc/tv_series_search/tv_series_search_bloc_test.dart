@@ -38,7 +38,7 @@ void main() {
     voteAverage: 8.0,
     voteCount: 200,
   );
-  
+
   final tTvSeriesList = <TvSeries>[tTvSeriesModel];
   final tQuery = 'game of thrones';
 

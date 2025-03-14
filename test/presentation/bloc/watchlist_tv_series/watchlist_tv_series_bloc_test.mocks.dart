@@ -27,7 +27,7 @@ import 'package:mockito/mockito.dart' as _i1;
 
 class _FakeEither_0<L, R> extends _i1.SmartFake implements _i2.Either<L, R> {
   _FakeEither_0(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+      : super(parent, parentInvocation);
 }
 
 /// A class which mocks [GetWatchlistTvSeries].
@@ -42,14 +42,13 @@ class MockGetWatchlistTvSeries extends _i1.Mock
   @override
   _i4.Future<_i2.Either<_i5.Failure, List<_i6.TvSeries>>> execute() =>
       (super.noSuchMethod(
+        Invocation.method(#execute, []),
+        returnValue:
+            _i4.Future<_i2.Either<_i5.Failure, List<_i6.TvSeries>>>.value(
+          _FakeEither_0<_i5.Failure, List<_i6.TvSeries>>(
+            this,
             Invocation.method(#execute, []),
-            returnValue:
-                _i4.Future<_i2.Either<_i5.Failure, List<_i6.TvSeries>>>.value(
-                  _FakeEither_0<_i5.Failure, List<_i6.TvSeries>>(
-                    this,
-                    Invocation.method(#execute, []),
-                  ),
-                ),
-          )
-          as _i4.Future<_i2.Either<_i5.Failure, List<_i6.TvSeries>>>);
+          ),
+        ),
+      ) as _i4.Future<_i2.Either<_i5.Failure, List<_i6.TvSeries>>>);
 }
