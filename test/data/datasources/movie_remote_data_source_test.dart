@@ -133,8 +133,7 @@ void main() {
 
     test('should return list of movies when response code is 200', () async {
       // arrange
-      when(mockHttpClient
-              .get(Uri.parse(AppConfig.searchMoviesUrl(tQuery))))
+      when(mockHttpClient.get(Uri.parse(AppConfig.searchMoviesUrl(tQuery))))
           .thenAnswer((_) async => http.Response(
               readJson('dummy_data/search_spiderman_movie.json'), 200));
       // act
@@ -146,8 +145,7 @@ void main() {
     test('should throw ServerException when response code is other than 200',
         () async {
       // arrange
-      when(mockHttpClient
-              .get(Uri.parse(AppConfig.searchMoviesUrl(tQuery))))
+      when(mockHttpClient.get(Uri.parse(AppConfig.searchMoviesUrl(tQuery))))
           .thenAnswer((_) async => http.Response('Not Found', 404));
       // act
       final call = dataSource.searchMovies(tQuery);

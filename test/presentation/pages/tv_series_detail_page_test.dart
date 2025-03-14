@@ -12,7 +12,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
-import 'package:bloc_test/bloc_test.dart';
 
 import 'tv_series_detail_page_test.mocks.dart';
 
@@ -22,7 +21,8 @@ void main() {
 
   setUp(() {
     mockBloc = MockTvSeriesDetailBloc();
-    when(mockBloc.stream).thenAnswer((_) => Stream.value(TvSeriesDetailState.initial()));
+    when(mockBloc.stream)
+        .thenAnswer((_) => Stream.value(TvSeriesDetailState.initial()));
     when(mockBloc.state).thenReturn(TvSeriesDetailState.initial());
     when(mockBloc.add(any)).thenReturn(null);
   });
@@ -58,37 +58,36 @@ void main() {
   );
 
   final tTvSeriesDetail = TvSeriesDetail(
-    backdropPath: 'path/to/backdrop.jpg',
-    episodeRunTime: [60],
-    firstAirDate: '2023-01-01',
-    genres: [Genre(id: 1, name: 'Action'), Genre(id: 2, name: 'Drama')],
-    homepage: 'https://example.com',
-    id: 1,
-    inProduction: true,
-    lastAirDate: '2023-12-31',
-    name: 'Test Series',
-    numberOfEpisodes: 12,
-    numberOfSeasons: 1,
-    originalLanguage: 'en',
-    originalName: 'Original Test Series',
-    overview: 'Test Overview',
-    popularity: 8.5,
-    posterPath: 'path/to/poster.jpg',
-    status: 'Returning Series',
-    tagline: 'A test tagline',
-    type: 'Scripted',
-    voteAverage: 8.5,
-    voteCount: 100
-  );
+      backdropPath: 'path/to/backdrop.jpg',
+      episodeRunTime: [60],
+      firstAirDate: '2023-01-01',
+      genres: [Genre(id: 1, name: 'Action'), Genre(id: 2, name: 'Drama')],
+      homepage: 'https://example.com',
+      id: 1,
+      inProduction: true,
+      lastAirDate: '2023-12-31',
+      name: 'Test Series',
+      numberOfEpisodes: 12,
+      numberOfSeasons: 1,
+      originalLanguage: 'en',
+      originalName: 'Original Test Series',
+      overview: 'Test Overview',
+      popularity: 8.5,
+      posterPath: 'path/to/poster.jpg',
+      status: 'Returning Series',
+      tagline: 'A test tagline',
+      type: 'Scripted',
+      voteAverage: 8.5,
+      voteCount: 100);
 
   testWidgets('Page should display loading indicator when state is loading',
       (WidgetTester tester) async {
     // arrange
     when(mockBloc.stream).thenAnswer((_) => Stream.fromIterable([
-      TvSeriesDetailState.initial().copyWith(
-        tvSeriesState: RequestState.Loading,
-      ),
-    ]));
+          TvSeriesDetailState.initial().copyWith(
+            tvSeriesState: RequestState.Loading,
+          ),
+        ]));
 
     // act
     await tester.pumpWidget(_makeTestableWidget(TvSeriesDetailPage(id: tId)));
@@ -105,11 +104,11 @@ void main() {
       (WidgetTester tester) async {
     // arrange
     when(mockBloc.stream).thenAnswer((_) => Stream.fromIterable([
-      TvSeriesDetailState.initial().copyWith(
-        tvSeriesState: RequestState.Error,
-        message: 'Error message',
-      ),
-    ]));
+          TvSeriesDetailState.initial().copyWith(
+            tvSeriesState: RequestState.Error,
+            message: 'Error message',
+          ),
+        ]));
 
     // act
     await tester.pumpWidget(_makeTestableWidget(TvSeriesDetailPage(id: tId)));
@@ -126,14 +125,14 @@ void main() {
       (WidgetTester tester) async {
     // arrange
     when(mockBloc.stream).thenAnswer((_) => Stream.fromIterable([
-      TvSeriesDetailState.initial().copyWith(
-        tvSeriesState: RequestState.Loaded,
-        tvSeriesDetail: tTvSeriesDetail,
-        recommendations: [tTvSeries],
-        recommendationState: RequestState.Loaded,
-        isAddedToWatchlist: false,
-      ),
-    ]));
+          TvSeriesDetailState.initial().copyWith(
+            tvSeriesState: RequestState.Loaded,
+            tvSeriesDetail: tTvSeriesDetail,
+            recommendations: [tTvSeries],
+            recommendationState: RequestState.Loaded,
+            isAddedToWatchlist: false,
+          ),
+        ]));
 
     // act
     await tester.pumpWidget(_makeTestableWidget(TvSeriesDetailPage(id: tId)));
@@ -157,28 +156,27 @@ void main() {
       (WidgetTester tester) async {
     // arrange
     final emptyGenreTvSeriesDetail = TvSeriesDetail(
-      backdropPath: 'path/to/backdrop.jpg',
-      episodeRunTime: [60],
-      firstAirDate: '2023-01-01',
-      genres: [],
-      homepage: 'https://example.com',
-      id: 1,
-      inProduction: true,
-      lastAirDate: '2023-12-31',
-      name: 'Test Series',
-      numberOfEpisodes: 12,
-      numberOfSeasons: 1,
-      originalLanguage: 'en',
-      originalName: 'Original Test Series',
-      overview: 'Test Overview',
-      popularity: 8.5,
-      posterPath: 'path/to/poster.jpg',
-      status: 'Returning Series',
-      tagline: 'A test tagline',
-      type: 'Scripted',
-      voteAverage: 8.5,
-      voteCount: 100
-    );
+        backdropPath: 'path/to/backdrop.jpg',
+        episodeRunTime: [60],
+        firstAirDate: '2023-01-01',
+        genres: [],
+        homepage: 'https://example.com',
+        id: 1,
+        inProduction: true,
+        lastAirDate: '2023-12-31',
+        name: 'Test Series',
+        numberOfEpisodes: 12,
+        numberOfSeasons: 1,
+        originalLanguage: 'en',
+        originalName: 'Original Test Series',
+        overview: 'Test Overview',
+        popularity: 8.5,
+        posterPath: 'path/to/poster.jpg',
+        status: 'Returning Series',
+        tagline: 'A test tagline',
+        type: 'Scripted',
+        voteAverage: 8.5,
+        voteCount: 100);
 
     when(mockBloc.state).thenReturn(
       TvSeriesDetailState.initial().copyWith(

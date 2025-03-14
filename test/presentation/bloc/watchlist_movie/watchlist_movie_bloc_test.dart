@@ -38,7 +38,8 @@ void main() {
     },
     act: (bloc) => bloc.add(FetchWatchlistMovies()),
     expect: () => [
-      WatchlistMovieState.initial().copyWith(watchlistState: RequestState.Loading),
+      WatchlistMovieState.initial()
+          .copyWith(watchlistState: RequestState.Loading),
       WatchlistMovieState.initial().copyWith(
         watchlistState: RequestState.Loaded,
         watchlistMovies: [testWatchlistMovie],
@@ -52,13 +53,14 @@ void main() {
   blocTest<WatchlistMovieBloc, WatchlistMovieState>(
     'should emit [Loading, Error] when get watchlist is unsuccessful',
     build: () {
-      when(mockGetWatchlistMovies.execute())
-          .thenAnswer((_) async => Left(DatabaseFailure("Can't get watchlist")));
+      when(mockGetWatchlistMovies.execute()).thenAnswer(
+          (_) async => Left(DatabaseFailure("Can't get watchlist")));
       return watchlistMovieBloc;
     },
     act: (bloc) => bloc.add(FetchWatchlistMovies()),
     expect: () => [
-      WatchlistMovieState.initial().copyWith(watchlistState: RequestState.Loading),
+      WatchlistMovieState.initial()
+          .copyWith(watchlistState: RequestState.Loading),
       WatchlistMovieState.initial().copyWith(
         watchlistState: RequestState.Error,
         message: "Can't get watchlist",

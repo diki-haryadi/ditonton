@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:ditonton/domain/usecases/get_tv_series_detail.dart';
+import 'package:ditonton/domain/usecases/get_tv_series_recommendations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -7,25 +7,26 @@ import '../../dummy_data/tv_series_dummy_objects.dart';
 import '../../helpers/test_helper.mocks.dart';
 
 void main() {
-  late GetTvSeriesDetail usecase;
+  late GetTvSeriesRecommendations usecase;
   late MockTvSeriesRepository mockTvSeriesRepository;
 
   setUp(() {
     mockTvSeriesRepository = MockTvSeriesRepository();
-    usecase = GetTvSeriesDetail(mockTvSeriesRepository);
+    usecase = GetTvSeriesRecommendations(mockTvSeriesRepository);
   });
 
   final tId = 1;
 
-  test('should get tv series detail from the repository', () async {
+  test('should get list of tv series recommendations from the repository',
+      () async {
     // arrange
-    when(mockTvSeriesRepository.getTvSeriesDetail(tId))
-        .thenAnswer((_) async => Right(testTvSeriesDetail));
+    when(mockTvSeriesRepository.getTvSeriesRecommendations(tId))
+        .thenAnswer((_) async => Right(testTvSeriesList));
     // act
     final result = await usecase.execute(tId);
     // assert
-    expect(result, Right(testTvSeriesDetail));
-    verify(mockTvSeriesRepository.getTvSeriesDetail(tId));
+    expect(result, Right(testTvSeriesList));
+    verify(mockTvSeriesRepository.getTvSeriesRecommendations(tId));
     verifyNoMoreInteractions(mockTvSeriesRepository);
   });
 }

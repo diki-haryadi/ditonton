@@ -5,11 +5,11 @@ class TvSeries extends Equatable {
   final String? firstAirDate;
   final List<int> genreIds;
   final int id;
-  final String name;
+  final String? name;
   final List<String> originCountry;
   final String originalLanguage;
   final String originalName;
-  final String overview;
+  final String? overview;
   final double popularity;
   final String? posterPath;
   final double voteAverage;
@@ -35,7 +35,8 @@ class TvSeries extends Equatable {
     required this.id,
     required this.name,
     required this.posterPath,
-    required this.overview, required String firstAirDate,
+    required this.overview,
+    required String firstAirDate,
   })  : genreIds = const [],
         originCountry = const [],
         originalLanguage = '',

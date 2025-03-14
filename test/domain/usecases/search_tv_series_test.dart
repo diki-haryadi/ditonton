@@ -1,29 +1,31 @@
 import 'package:dartz/dartz.dart';
-import 'package:ditonton/domain/entities/tv_series.dart';
 import 'package:ditonton/domain/usecases/search_tv_series.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'search_tv_series_test.mocks.dart';
+import '../../dummy_data/tv_series_dummy_objects.dart';
+import '../../helpers/test_helper.mocks.dart';
 
-@GenerateMocks([SearchTvSeries])
 void main() {
-  late MockSearchTvSeries usecase;
+  late SearchTvSeries usecase;
+  late MockTvSeriesRepository mockTvSeriesRepository;
 
   setUp(() {
-    usecase = MockSearchTvSeries();
+    mockTvSeriesRepository = MockTvSeriesRepository();
+    usecase = SearchTvSeries(mockTvSeriesRepository);
   });
 
-  final tTvSeries = <TvSeries>[];
   final tQuery = 'Game of Thrones';
 
   test('should get list of tv series from the repository', () async {
     // arrange
-    when(usecase.execute(tQuery)).thenAnswer((_) async => Right(tTvSeries));
+    when(mockTvSeriesRepository.searchTvSeries(tQuery))
+        .thenAnswer((_) async => Right(testTvSeriesList));
     // act
     final result = await usecase.execute(tQuery);
     // assert
-    expect(result, Right(tTvSeries));
+    expect(result, Right(testTvSeriesList));
+    verify(mockTvSeriesRepository.searchTvSeries(tQuery));
+    verifyNoMoreInteractions(mockTvSeriesRepository);
   });
 }

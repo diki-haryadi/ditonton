@@ -23,7 +23,8 @@ class TvSeriesRemoteDataSourceImpl implements TvSeriesRemoteDataSource {
 
   @override
   Future<List<TvSeriesModel>> getNowPlayingTvSeries() async {
-    final response = await client.get(Uri.parse(AppConfig.getNowPlayingTvSeriesUrl()));
+    final response =
+        await client.get(Uri.parse(AppConfig.getNowPlayingTvSeriesUrl()));
 
     if (response.statusCode == 200) {
       return TvSeriesResponse.fromJson(json.decode(response.body)).tvSeriesList;
@@ -34,7 +35,8 @@ class TvSeriesRemoteDataSourceImpl implements TvSeriesRemoteDataSource {
 
   @override
   Future<TvSeriesDetailResponse> getTvSeriesDetail(int id) async {
-    final response = await client.get(Uri.parse(AppConfig.getTvSeriesDetailUrl(id)));
+    final response =
+        await client.get(Uri.parse(AppConfig.getTvSeriesDetailUrl(id)));
 
     if (response.statusCode == 200) {
       return TvSeriesDetailResponse.fromJson(json.decode(response.body));
@@ -45,7 +47,8 @@ class TvSeriesRemoteDataSourceImpl implements TvSeriesRemoteDataSource {
 
   @override
   Future<List<TvSeriesModel>> getTvSeriesRecommendations(int id) async {
-    final response = await client.get(Uri.parse(AppConfig.getTvSeriesRecommendationsUrl(id)));
+    final response = await client
+        .get(Uri.parse(AppConfig.getTvSeriesRecommendationsUrl(id)));
 
     if (response.statusCode == 200) {
       return TvSeriesResponse.fromJson(json.decode(response.body)).tvSeriesList;
@@ -56,7 +59,8 @@ class TvSeriesRemoteDataSourceImpl implements TvSeriesRemoteDataSource {
 
   @override
   Future<List<TvSeriesModel>> getPopularTvSeries() async {
-    final response = await client.get(Uri.parse(AppConfig.getPopularTvSeriesUrl()));
+    final response =
+        await client.get(Uri.parse(AppConfig.getPopularTvSeriesUrl()));
 
     if (response.statusCode == 200) {
       return TvSeriesResponse.fromJson(json.decode(response.body)).tvSeriesList;
@@ -67,7 +71,8 @@ class TvSeriesRemoteDataSourceImpl implements TvSeriesRemoteDataSource {
 
   @override
   Future<List<TvSeriesModel>> getTopRatedTvSeries() async {
-    final response = await client.get(Uri.parse(AppConfig.getTopRatedTvSeriesUrl()));
+    final response =
+        await client.get(Uri.parse(AppConfig.getTopRatedTvSeriesUrl()));
 
     if (response.statusCode == 200) {
       return TvSeriesResponse.fromJson(json.decode(response.body)).tvSeriesList;
@@ -78,7 +83,8 @@ class TvSeriesRemoteDataSourceImpl implements TvSeriesRemoteDataSource {
 
   @override
   Future<List<TvSeriesModel>> searchTvSeries(String query) async {
-    final response = await client.get(Uri.parse(AppConfig.searchTvSeriesUrl(query)));
+    final response =
+        await client.get(Uri.parse(AppConfig.searchTvSeriesUrl(query)));
 
     if (response.statusCode == 200) {
       return TvSeriesResponse.fromJson(json.decode(response.body)).tvSeriesList;

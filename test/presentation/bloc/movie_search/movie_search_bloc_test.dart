@@ -38,7 +38,7 @@ void main() {
     voteAverage: 8.0,
     voteCount: 200,
   );
-  
+
   final tMovieList = <Movie>[tMovieModel];
   final tQuery = 'spiderman';
 

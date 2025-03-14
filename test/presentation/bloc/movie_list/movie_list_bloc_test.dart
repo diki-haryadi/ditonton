@@ -48,7 +48,7 @@ void main() {
     voteAverage: 1,
     voteCount: 1,
   );
-  
+
   final tMovieList = <Movie>[tMovie];
 
   group('Now Playing Movies', () {
@@ -61,7 +61,8 @@ void main() {
       },
       act: (bloc) => bloc.add(FetchNowPlayingMovies()),
       expect: () => [
-        MovieListState.initial().copyWith(nowPlayingState: RequestState.Loading),
+        MovieListState.initial()
+            .copyWith(nowPlayingState: RequestState.Loading),
         MovieListState.initial().copyWith(
           nowPlayingState: RequestState.Loaded,
           nowPlayingMovies: tMovieList,
@@ -81,7 +82,8 @@ void main() {
       },
       act: (bloc) => bloc.add(FetchNowPlayingMovies()),
       expect: () => [
-        MovieListState.initial().copyWith(nowPlayingState: RequestState.Loading),
+        MovieListState.initial()
+            .copyWith(nowPlayingState: RequestState.Loading),
         MovieListState.initial().copyWith(
           nowPlayingState: RequestState.Error,
           message: 'Server Failure',
@@ -103,7 +105,8 @@ void main() {
       },
       act: (bloc) => bloc.add(FetchPopularMovies()),
       expect: () => [
-        MovieListState.initial().copyWith(popularMoviesState: RequestState.Loading),
+        MovieListState.initial()
+            .copyWith(popularMoviesState: RequestState.Loading),
         MovieListState.initial().copyWith(
           popularMoviesState: RequestState.Loaded,
           popularMovies: tMovieList,
@@ -125,7 +128,8 @@ void main() {
       },
       act: (bloc) => bloc.add(FetchTopRatedMovies()),
       expect: () => [
-        MovieListState.initial().copyWith(topRatedMoviesState: RequestState.Loading),
+        MovieListState.initial()
+            .copyWith(topRatedMoviesState: RequestState.Loading),
         MovieListState.initial().copyWith(
           topRatedMoviesState: RequestState.Loaded,
           topRatedMovies: tMovieList,

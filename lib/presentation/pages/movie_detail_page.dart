@@ -36,7 +36,7 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
     return Scaffold(
       body: BlocConsumer<MovieDetailBloc, MovieDetailState>(
         listenWhen: (previous, current) =>
-        previous.watchlistMessage != current.watchlistMessage &&
+            previous.watchlistMessage != current.watchlistMessage &&
             current.watchlistMessage.isNotEmpty,
         listener: (context, state) {
           final message = state.watchlistMessage;
@@ -89,7 +89,8 @@ class DetailContent extends StatelessWidget {
   final RequestState recommendationState;
   final String message;
 
-  DetailContent(this.movie, this.recommendations, this.isAddedWatchlist, this.recommendationState, this.message);
+  DetailContent(this.movie, this.recommendations, this.isAddedWatchlist,
+      this.recommendationState, this.message);
 
   @override
   Widget build(BuildContext context) {
@@ -134,11 +135,13 @@ class DetailContent extends StatelessWidget {
                             FilledButton(
                               onPressed: () {
                                 if (!isAddedWatchlist) {
-                                  context.read<MovieDetailBloc>().add(
-                                      AddMovieToWatchlist(movie));
+                                  context
+                                      .read<MovieDetailBloc>()
+                                      .add(AddMovieToWatchlist(movie));
                                 } else {
-                                  context.read<MovieDetailBloc>().add(
-                                      RemoveMovieFromWatchlist(movie));
+                                  context
+                                      .read<MovieDetailBloc>()
+                                      .add(RemoveMovieFromWatchlist(movie));
                                 }
                                 // We no longer need to check state here as we're using BlocConsumer
                               },
@@ -188,13 +191,16 @@ class DetailContent extends StatelessWidget {
                             const SizedBox(height: 8),
                             BlocBuilder<MovieDetailBloc, MovieDetailState>(
                               builder: (context, state) {
-                                if (state.recommendationState == RequestState.Loading) {
+                                if (state.recommendationState ==
+                                    RequestState.Loading) {
                                   return Center(
                                     child: CircularProgressIndicator(),
                                   );
-                                } else if (state.recommendationState == RequestState.Error) {
+                                } else if (state.recommendationState ==
+                                    RequestState.Error) {
                                   return Text(state.message);
-                                } else if (state.recommendationState == RequestState.Loaded) {
+                                } else if (state.recommendationState ==
+                                    RequestState.Loaded) {
                                   return Container(
                                     height: 150,
                                     child: ListView.builder(
@@ -216,11 +222,16 @@ class DetailContent extends StatelessWidget {
                                                 Radius.circular(8),
                                               ),
                                               child: CachedNetworkImage(
-                                                imageUrl: 'https://image.tmdb.org/t/p/w500${movie.posterPath}',
-                                                placeholder: (context, url) => Center(
-                                                  child: CircularProgressIndicator(),
+                                                imageUrl:
+                                                    'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+                                                placeholder: (context, url) =>
+                                                    Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
                                                 ),
-                                                errorWidget: (context, url, error) => Icon(Icons.error),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        Icon(Icons.error),
                                               ),
                                             ),
                                           ),

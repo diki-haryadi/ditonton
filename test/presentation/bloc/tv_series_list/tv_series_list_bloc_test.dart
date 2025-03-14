@@ -48,7 +48,7 @@ void main() {
     voteAverage: 1,
     voteCount: 1,
   );
-  
+
   final tTvSeriesList = <TvSeries>[tTvSeries];
 
   group('Now Playing TV Series', () {
@@ -61,7 +61,8 @@ void main() {
       },
       act: (bloc) => bloc.add(FetchNowPlayingTvSeries()),
       expect: () => [
-        TvSeriesListState.initial().copyWith(nowPlayingState: RequestState.Loading),
+        TvSeriesListState.initial()
+            .copyWith(nowPlayingState: RequestState.Loading),
         TvSeriesListState.initial().copyWith(
           nowPlayingState: RequestState.Loaded,
           nowPlayingTvSeries: tTvSeriesList,
@@ -81,7 +82,8 @@ void main() {
       },
       act: (bloc) => bloc.add(FetchNowPlayingTvSeries()),
       expect: () => [
-        TvSeriesListState.initial().copyWith(nowPlayingState: RequestState.Loading),
+        TvSeriesListState.initial()
+            .copyWith(nowPlayingState: RequestState.Loading),
         TvSeriesListState.initial().copyWith(
           nowPlayingState: RequestState.Error,
           message: 'Server Failure',
@@ -103,7 +105,8 @@ void main() {
       },
       act: (bloc) => bloc.add(FetchPopularTvSeries()),
       expect: () => [
-        TvSeriesListState.initial().copyWith(popularTvSeriesState: RequestState.Loading),
+        TvSeriesListState.initial()
+            .copyWith(popularTvSeriesState: RequestState.Loading),
         TvSeriesListState.initial().copyWith(
           popularTvSeriesState: RequestState.Loaded,
           popularTvSeries: tTvSeriesList,

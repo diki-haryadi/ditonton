@@ -35,7 +35,9 @@ void main() {
       );
     });
 
-    test('copyWith should create a new object with updated values when parameters are passed', () {
+    test(
+        'copyWith should create a new object with updated values when parameters are passed',
+        () {
       final movie = Movie(
         adult: false,
         backdropPath: 'backdropPath',
@@ -51,14 +53,14 @@ void main() {
         voteAverage: 1,
         voteCount: 1,
       );
-      
+
       final originalState = MovieSearchState.initial();
       final copiedState = originalState.copyWith(
         state: RequestState.Loaded,
         searchResult: [movie],
         message: 'Message',
       );
-      
+
       expect(copiedState, isNot(originalState));
       expect(copiedState.state, RequestState.Loaded);
       expect(copiedState.searchResult, [movie]);

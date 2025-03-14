@@ -37,9 +37,9 @@ class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
     Emitter<MovieDetailState> emit,
   ) async {
     emit(state.copyWith(movieState: RequestState.Loading));
-    
+
     final detailResult = await getMovieDetail.execute(event.id);
-    
+
     if (detailResult.isLeft()) {
       final failure = detailResult.fold(
         (l) => l,
@@ -51,20 +51,21 @@ class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
       ));
       return;
     }
-    
+
     final movie = detailResult.fold(
       (l) => null,
       (r) => r,
     );
-    
+
     emit(state.copyWith(
       movieState: RequestState.Loaded,
       movieDetail: movie,
       recommendationState: RequestState.Loading,
     ));
-    
-    final recommendationResult = await getMovieRecommendations.execute(event.id);
-    
+
+    final recommendationResult =
+        await getMovieRecommendations.execute(event.id);
+
     if (recommendationResult.isLeft()) {
       final failure = recommendationResult.fold(
         (l) => l,
@@ -91,7 +92,7 @@ class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
     Emitter<MovieDetailState> emit,
   ) async {
     final result = await saveWatchlist.execute(event.movieDetail);
-    
+
     String message = watchlistAddSuccessMessage;
     result.fold(
       (failure) {
@@ -101,7 +102,7 @@ class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
         message = successMessage;
       },
     );
-    
+
     // Update watchlist status
     final status = await getWatchListStatus.execute(event.movieDetail.id);
     emit(state.copyWith(
@@ -115,7 +116,7 @@ class MovieDetailBloc extends Bloc<MovieDetailEvent, MovieDetailState> {
     Emitter<MovieDetailState> emit,
   ) async {
     final result = await removeWatchlist.execute(event.movieDetail);
-    
+
     String message = '';
     result.fold(
       (failure) {

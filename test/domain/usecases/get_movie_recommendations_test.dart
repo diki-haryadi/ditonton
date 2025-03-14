@@ -1,30 +1,32 @@
 import 'package:dartz/dartz.dart';
-import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/domain/usecases/get_movie_recommendations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'get_movie_recommendations_test.mocks.dart';
+import '../../dummy_data/dummy_objects.dart';
+import '../../helpers/test_helper.mocks.dart';
 
-@GenerateMocks([GetMovieRecommendations])
 void main() {
-  late MockGetMovieRecommendations usecase;
+  late GetMovieRecommendations usecase;
+  late MockMovieRepository mockMovieRepository;
 
   setUp(() {
-    usecase = MockGetMovieRecommendations();
+    mockMovieRepository = MockMovieRepository();
+    usecase = GetMovieRecommendations(mockMovieRepository);
   });
 
   final tId = 1;
-  final tMovies = <Movie>[];
 
   test('should get list of movie recommendations from the repository',
       () async {
     // arrange
-    when(usecase.execute(tId)).thenAnswer((_) async => Right(tMovies));
+    when(mockMovieRepository.getMovieRecommendations(tId))
+        .thenAnswer((_) async => Right(testMovieList));
     // act
     final result = await usecase.execute(tId);
     // assert
-    expect(result, Right(tMovies));
+    expect(result, Right(testMovieList));
+    verify(mockMovieRepository.getMovieRecommendations(tId));
+    verifyNoMoreInteractions(mockMovieRepository);
   });
 }

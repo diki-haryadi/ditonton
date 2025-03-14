@@ -7,7 +7,8 @@ import 'package:ditonton/presentation/bloc/movie_search/movie_search_state.dart'
 class MovieSearchBloc extends Bloc<MovieSearchEvent, MovieSearchState> {
   final SearchMovies searchMovies;
 
-  MovieSearchBloc({required this.searchMovies}) : super(MovieSearchState.initial()) {
+  MovieSearchBloc({required this.searchMovies})
+      : super(MovieSearchState.initial()) {
     on<QueryChanged>(_onQueryChanged);
   }
 

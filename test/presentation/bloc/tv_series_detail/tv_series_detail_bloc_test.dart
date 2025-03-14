@@ -67,7 +67,8 @@ void main() {
       },
       act: (bloc) => bloc.add(const FetchTvSeriesDetail(tId)),
       expect: () => [
-        TvSeriesDetailState.initial().copyWith(tvSeriesState: RequestState.Loading),
+        TvSeriesDetailState.initial()
+            .copyWith(tvSeriesState: RequestState.Loading),
         TvSeriesDetailState.initial().copyWith(
           tvSeriesState: RequestState.Loaded,
           tvSeriesDetail: testTvSeriesDetail,
@@ -97,7 +98,8 @@ void main() {
       },
       act: (bloc) => bloc.add(const FetchTvSeriesDetail(tId)),
       expect: () => [
-        TvSeriesDetailState.initial().copyWith(tvSeriesState: RequestState.Loading),
+        TvSeriesDetailState.initial()
+            .copyWith(tvSeriesState: RequestState.Loading),
         TvSeriesDetailState.initial().copyWith(
           tvSeriesState: RequestState.Error,
           message: 'Server Failure',

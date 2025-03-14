@@ -1,5 +1,4 @@
 import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/presentation/bloc/watchlist_movie/watchlist_movie_state.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -31,7 +30,7 @@ void main() {
         watchlistMovies: [testWatchlistMovie],
         message: 'Message',
       );
-      
+
       expect(state.props, [
         RequestState.Loaded,
         [testWatchlistMovie],
@@ -39,14 +38,16 @@ void main() {
       ]);
     });
 
-    test('copyWith should create a new object with updated values when parameters are passed', () {
+    test(
+        'copyWith should create a new object with updated values when parameters are passed',
+        () {
       final originalState = WatchlistMovieState.initial();
       final copiedState = originalState.copyWith(
         watchlistState: RequestState.Loaded,
         watchlistMovies: [testWatchlistMovie],
         message: 'Message',
       );
-      
+
       expect(copiedState, isNot(originalState));
       expect(copiedState.watchlistState, RequestState.Loaded);
       expect(copiedState.watchlistMovies, [testWatchlistMovie]);

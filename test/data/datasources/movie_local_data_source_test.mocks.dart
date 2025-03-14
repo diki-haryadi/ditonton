@@ -34,78 +34,66 @@ class MockDatabaseHelper extends _i1.Mock implements _i2.DatabaseHelper {
   }
 
   @override
-  _i3.Future<_i4.Database?> get database =>
-      (super.noSuchMethod(
-            Invocation.getter(#database),
-            returnValue: _i3.Future<_i4.Database?>.value(),
-          )
-          as _i3.Future<_i4.Database?>);
+  _i3.Future<_i4.Database?> get database => (super.noSuchMethod(
+        Invocation.getter(#database),
+        returnValue: _i3.Future<_i4.Database?>.value(),
+      ) as _i3.Future<_i4.Database?>);
 
   @override
-  _i3.Future<int> insertWatchlist(_i5.MovieTable? movie) =>
-      (super.noSuchMethod(
-            Invocation.method(#insertWatchlist, [movie]),
-            returnValue: _i3.Future<int>.value(0),
-          )
-          as _i3.Future<int>);
+  _i3.Future<int> insertWatchlist(_i5.MovieTable? movie) => (super.noSuchMethod(
+        Invocation.method(#insertWatchlist, [movie]),
+        returnValue: _i3.Future<int>.value(0),
+      ) as _i3.Future<int>);
 
   @override
-  _i3.Future<int> removeWatchlist(_i5.MovieTable? movie) =>
-      (super.noSuchMethod(
-            Invocation.method(#removeWatchlist, [movie]),
-            returnValue: _i3.Future<int>.value(0),
-          )
-          as _i3.Future<int>);
+  _i3.Future<int> removeWatchlist(_i5.MovieTable? movie) => (super.noSuchMethod(
+        Invocation.method(#removeWatchlist, [movie]),
+        returnValue: _i3.Future<int>.value(0),
+      ) as _i3.Future<int>);
 
   @override
   _i3.Future<Map<String, dynamic>?> getMovieById(int? id) =>
       (super.noSuchMethod(
-            Invocation.method(#getMovieById, [id]),
-            returnValue: _i3.Future<Map<String, dynamic>?>.value(),
-          )
-          as _i3.Future<Map<String, dynamic>?>);
+        Invocation.method(#getMovieById, [id]),
+        returnValue: _i3.Future<Map<String, dynamic>?>.value(),
+      ) as _i3.Future<Map<String, dynamic>?>);
 
   @override
   _i3.Future<List<Map<String, dynamic>>> getWatchlistMovies() =>
       (super.noSuchMethod(
-            Invocation.method(#getWatchlistMovies, []),
-            returnValue: _i3.Future<List<Map<String, dynamic>>>.value(
-              <Map<String, dynamic>>[],
-            ),
-          )
-          as _i3.Future<List<Map<String, dynamic>>>);
+        Invocation.method(#getWatchlistMovies, []),
+        returnValue: _i3.Future<List<Map<String, dynamic>>>.value(
+          <Map<String, dynamic>>[],
+        ),
+      ) as _i3.Future<List<Map<String, dynamic>>>);
 
   @override
   _i3.Future<int> insertTvSeriesWatchlist(_i6.TvSeriesTable? tvSeries) =>
       (super.noSuchMethod(
-            Invocation.method(#insertTvSeriesWatchlist, [tvSeries]),
-            returnValue: _i3.Future<int>.value(0),
-          )
-          as _i3.Future<int>);
+        Invocation.method(#insertTvSeriesWatchlist, [tvSeries]),
+        returnValue: _i3.Future<int>.value(0),
+      ) as _i3.Future<int>);
 
   @override
   _i3.Future<int> removeTvSeriesWatchlist(_i6.TvSeriesTable? tvSeries) =>
       (super.noSuchMethod(
-            Invocation.method(#removeTvSeriesWatchlist, [tvSeries]),
-            returnValue: _i3.Future<int>.value(0),
-          )
-          as _i3.Future<int>);
+        Invocation.method(#removeTvSeriesWatchlist, [tvSeries]),
+        returnValue: _i3.Future<int>.value(0),
+      ) as _i3.Future<int>);
 
   @override
   _i3.Future<Map<String, dynamic>?> getTvSeriesById(int? id) =>
       (super.noSuchMethod(
-            Invocation.method(#getTvSeriesById, [id]),
-            returnValue: _i3.Future<Map<String, dynamic>?>.value(),
-          )
-          as _i3.Future<Map<String, dynamic>?>);
+        Invocation.method(#getTvSeriesById, [id]),
+        returnValue: _i3.Future<Map<String, dynamic>?>.value(),
+      ) as _i3.Future<Map<String, dynamic>?>);
 
   @override
   _i3.Future<List<Map<String, dynamic>>> getWatchlistTvSeries() =>
       (super.noSuchMethod(
-            Invocation.method(#getWatchlistTvSeries, []),
-            returnValue: _i3.Future<List<Map<String, dynamic>>>.value(
-              <Map<String, dynamic>>[],
-            ),
-          )
-          as _i3.Future<List<Map<String, dynamic>>>);
+        Invocation.method(#getWatchlistTvSeries, []),
+        returnValue: _i3.Future<List<Map<String, dynamic>>>.value(
+          <Map<String, dynamic>>[],
+        ),
+      ) as _i3.Future<List<Map<String, dynamic>>>);
 }

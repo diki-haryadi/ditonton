@@ -27,7 +27,9 @@ class _TvSeriesDetailPageState extends State<TvSeriesDetailPage> {
     super.initState();
     Future.microtask(() {
       context.read<TvSeriesDetailBloc>().add(FetchTvSeriesDetail(widget.id));
-      context.read<TvSeriesDetailBloc>().add(LoadTvSeriesWatchlistStatus(widget.id));
+      context
+          .read<TvSeriesDetailBloc>()
+          .add(LoadTvSeriesWatchlistStatus(widget.id));
     });
   }
 
@@ -36,7 +38,7 @@ class _TvSeriesDetailPageState extends State<TvSeriesDetailPage> {
     return Scaffold(
       body: BlocConsumer<TvSeriesDetailBloc, TvSeriesDetailState>(
         listenWhen: (previous, current) =>
-        previous.watchlistMessage != current.watchlistMessage &&
+            previous.watchlistMessage != current.watchlistMessage &&
             current.watchlistMessage.isNotEmpty,
         listener: (context, state) {
           final message = state.watchlistMessage;
@@ -115,10 +117,10 @@ class DetailContent extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Colors.black87,
                       borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(16)),
+                          BorderRadius.vertical(top: Radius.circular(16)),
                     ),
                     padding:
-                    const EdgeInsets.only(left: 16, top: 16, right: 16),
+                        const EdgeInsets.only(left: 16, top: 16, right: 16),
                     child: Stack(
                       children: [
                         Container(
@@ -131,7 +133,7 @@ class DetailContent extends StatelessWidget {
                                 Text(
                                   series.name,
                                   style:
-                                  kHeading5.copyWith(color: Colors.white),
+                                      kHeading5.copyWith(color: Colors.white),
                                 ),
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
@@ -140,8 +142,9 @@ class DetailContent extends StatelessWidget {
                                   ),
                                   onPressed: () {
                                     if (!isAddedWatchlist) {
-                                      context.read<TvSeriesDetailBloc>().add(
-                                          AddTvSeriesToWatchlist(series));
+                                      context
+                                          .read<TvSeriesDetailBloc>()
+                                          .add(AddTvSeriesToWatchlist(series));
                                     } else {
                                       context.read<TvSeriesDetailBloc>().add(
                                           RemoveTvSeriesFromWatchlist(series));
@@ -153,9 +156,9 @@ class DetailContent extends StatelessWidget {
                                     children: [
                                       isAddedWatchlist
                                           ? Icon(Icons.check,
-                                          color: Colors.black)
+                                              color: Colors.black)
                                           : Icon(Icons.add,
-                                          color: Colors.black),
+                                              color: Colors.black),
                                       Text('Watchlist'),
                                     ],
                                   ),
@@ -182,7 +185,7 @@ class DetailContent extends StatelessWidget {
                                 Text(
                                   'Overview',
                                   style:
-                                  kHeading6.copyWith(color: Colors.white),
+                                      kHeading6.copyWith(color: Colors.white),
                                 ),
                                 Text(
                                   series.overview,
@@ -192,9 +195,10 @@ class DetailContent extends StatelessWidget {
                                 Text(
                                   'Recommendations',
                                   style:
-                                  kHeading6.copyWith(color: Colors.white),
+                                      kHeading6.copyWith(color: Colors.white),
                                 ),
-                                BlocBuilder<TvSeriesDetailBloc, TvSeriesDetailState>(
+                                BlocBuilder<TvSeriesDetailBloc,
+                                    TvSeriesDetailState>(
                                   builder: (context, state) {
                                     if (state.recommendationState ==
                                         RequestState.Loading) {
@@ -211,32 +215,38 @@ class DetailContent extends StatelessWidget {
                                         child: ListView.builder(
                                           scrollDirection: Axis.horizontal,
                                           itemBuilder: (context, index) {
-                                            final series = recommendations[index];
+                                            final series =
+                                                recommendations[index];
                                             return Padding(
-                                              padding: const EdgeInsets.all(4.0),
+                                              padding:
+                                                  const EdgeInsets.all(4.0),
                                               child: InkWell(
                                                 onTap: () {
-                                                  Navigator.pushReplacementNamed(
+                                                  Navigator
+                                                      .pushReplacementNamed(
                                                     context,
-                                                    TvSeriesDetailPage.ROUTE_NAME,
+                                                    TvSeriesDetailPage
+                                                        .ROUTE_NAME,
                                                     arguments: series.id,
                                                   );
                                                 },
                                                 child: ClipRRect(
-                                                  borderRadius: BorderRadius.all(
+                                                  borderRadius:
+                                                      BorderRadius.all(
                                                     Radius.circular(8),
                                                   ),
                                                   child: CachedNetworkImage(
                                                     imageUrl:
-                                                    '$BASE_IMAGE_URL${series.posterPath}',
-                                                    placeholder: (context, url) =>
-                                                        Center(
-                                                          child:
+                                                        '$BASE_IMAGE_URL${series.posterPath}',
+                                                    placeholder:
+                                                        (context, url) =>
+                                                            Center(
+                                                      child:
                                                           CircularProgressIndicator(),
-                                                        ),
+                                                    ),
                                                     errorWidget:
                                                         (context, url, error) =>
-                                                        Icon(Icons.error),
+                                                            Icon(Icons.error),
                                                   ),
                                                 ),
                                               ),

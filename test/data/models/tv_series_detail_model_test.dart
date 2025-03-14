@@ -81,10 +81,7 @@ void main() {
       'episode_run_time': [60],
       'first_air_date': '2022-01-01',
       'genres': [
-        {
-          'id': 1,
-          'name': 'Action'
-        }
+        {'id': 1, 'name': 'Action'}
       ],
       'homepage': 'https://example.com',
       'id': 1,

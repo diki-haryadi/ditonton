@@ -20,7 +20,8 @@ void main() {
 
   setUp(() {
     mockBloc = MockMovieDetailBloc();
-    when(mockBloc.stream).thenAnswer((_) => Stream.fromIterable([MovieDetailState.initial()]));
+    when(mockBloc.stream)
+        .thenAnswer((_) => Stream.fromIterable([MovieDetailState.initial()]));
     when(mockBloc.state).thenReturn(MovieDetailState.initial());
   });
 
@@ -111,25 +112,25 @@ void main() {
       'Watchlist button should display Snackbar when added to watchlist',
       (WidgetTester tester) async {
     when(mockBloc.stream).thenAnswer((_) => Stream.fromIterable([
-      MovieDetailState(
-        movieState: RequestState.Loaded,
-        recommendationState: RequestState.Loaded,
-        movieDetail: tMovie,
-        recommendations: tMovies,
-        isAddedToWatchlist: false,
-        message: '',
-        watchlistMessage: '',
-      ),
-      MovieDetailState(
-        movieState: RequestState.Loaded,
-        recommendationState: RequestState.Loaded,
-        movieDetail: tMovie,
-        recommendations: tMovies,
-        isAddedToWatchlist: false,
-        message: '',
-        watchlistMessage: MovieDetailBloc.watchlistAddSuccessMessage,
-      ),
-    ]));
+          MovieDetailState(
+            movieState: RequestState.Loaded,
+            recommendationState: RequestState.Loaded,
+            movieDetail: tMovie,
+            recommendations: tMovies,
+            isAddedToWatchlist: false,
+            message: '',
+            watchlistMessage: '',
+          ),
+          MovieDetailState(
+            movieState: RequestState.Loaded,
+            recommendationState: RequestState.Loaded,
+            movieDetail: tMovie,
+            recommendations: tMovies,
+            isAddedToWatchlist: false,
+            message: '',
+            watchlistMessage: MovieDetailBloc.watchlistAddSuccessMessage,
+          ),
+        ]));
     when(mockBloc.state).thenReturn(MovieDetailState(
       movieState: RequestState.Loaded,
       recommendationState: RequestState.Loaded,
@@ -139,7 +140,6 @@ void main() {
       message: '',
       watchlistMessage: '',
     ));
-
 
     final watchlistButton = find.byType(FilledButton);
 
@@ -151,8 +151,8 @@ void main() {
     await tester.pump();
 
     expect(find.byType(SnackBar), findsOneWidget);
-    expect(find.text(MovieDetailBloc.watchlistAddSuccessMessage),
-        findsOneWidget);
+    expect(
+        find.text(MovieDetailBloc.watchlistAddSuccessMessage), findsOneWidget);
   });
 
   testWidgets('Should display CircularProgressIndicator when movie loading',
@@ -267,8 +267,7 @@ void main() {
     expect(find.text('2h 0m'), findsOneWidget);
   });
 
-  testWidgets('Back button should pop',
-      (WidgetTester tester) async {
+  testWidgets('Back button should pop', (WidgetTester tester) async {
     when(mockBloc.state).thenReturn(MovieDetailState(
       movieState: RequestState.Loaded,
       recommendationState: RequestState.Loaded,
@@ -284,7 +283,7 @@ void main() {
     await tester.pumpWidget(_makeTestableWidget(MovieDetailPage(id: 1)));
 
     expect(backButton, findsOneWidget);
-    
+
     // Cannot test navigation pop in widget test without additional setup
     // but we can verify the button exists
   });

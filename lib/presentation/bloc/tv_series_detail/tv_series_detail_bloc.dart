@@ -9,7 +9,8 @@ import 'package:ditonton/domain/usecases/save_watchlist_tv_series.dart';
 import 'package:ditonton/presentation/bloc/tv_series_detail/tv_series_detail_event.dart';
 import 'package:ditonton/presentation/bloc/tv_series_detail/tv_series_detail_state.dart';
 
-class TvSeriesDetailBloc extends Bloc<TvSeriesDetailEvent, TvSeriesDetailState> {
+class TvSeriesDetailBloc
+    extends Bloc<TvSeriesDetailEvent, TvSeriesDetailState> {
   static const watchlistAddSuccessMessage = 'Added to Watchlist';
   static const watchlistRemoveSuccessMessage = 'Removed from Watchlist';
 
@@ -51,20 +52,21 @@ class TvSeriesDetailBloc extends Bloc<TvSeriesDetailEvent, TvSeriesDetailState> 
       ));
       return;
     }
-    
+
     final tvSeries = detailResult.fold(
       (l) => null,
       (r) => r,
     );
-    
+
     emit(state.copyWith(
       tvSeriesState: RequestState.Loaded,
       tvSeriesDetail: tvSeries,
       recommendationState: RequestState.Loading,
     ));
-    
-    final recommendationResult = await getTvSeriesRecommendations.execute(event.id);
-    
+
+    final recommendationResult =
+        await getTvSeriesRecommendations.execute(event.id);
+
     if (recommendationResult.isLeft()) {
       final failure = recommendationResult.fold(
         (l) => l,
@@ -102,7 +104,7 @@ class TvSeriesDetailBloc extends Bloc<TvSeriesDetailEvent, TvSeriesDetailState> 
         message = successMessage;
       },
     );
-    
+
     emit(state.copyWith(
       watchlistMessage: message,
       isAddedToWatchlist: status,
@@ -124,9 +126,9 @@ class TvSeriesDetailBloc extends Bloc<TvSeriesDetailEvent, TvSeriesDetailState> 
         message = successMessage;
       },
     );
-    
+
     emit(state.copyWith(watchlistMessage: message));
-    
+
     // Update watchlist status after removing
     final status = await getWatchListStatus.execute(event.tvSeriesDetail.id);
     emit(state.copyWith(isAddedToWatchlist: status));

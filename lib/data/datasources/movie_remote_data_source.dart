@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:ditonton/common/config.dart';
-import 'package:ditonton/common/ssl_pinning.dart';
 import 'package:ditonton/data/models/movie_detail_model.dart';
 import 'package:ditonton/data/models/movie_model.dart';
 import 'package:ditonton/data/models/movie_response.dart';
@@ -27,7 +26,7 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
   Future<List<MovieModel>> getNowPlayingMovies() async {
     try {
       final url = AppConfig.getNowPlayingMoviesUrl();
-      
+
       // Menggunakan custom get method dengan retry
       final response = await _getWithRetry(url);
 
@@ -99,7 +98,7 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
     } on SocketException {
       throw ConnectionFailureException('Failed to connect to the network');
     } on http.ClientException {
-      throw ConnectionFailureException('Failed to connect to the server'); 
+      throw ConnectionFailureException('Failed to connect to the server');
     } catch (e) {
       throw ServerException();
     }
@@ -144,11 +143,11 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
       throw ServerException();
     }
   }
-  
+
   // Custom get method with retry logic
   Future<http.Response> _getWithRetry(String url, {int maxRetries = 3}) async {
     int retries = 0;
-    
+
     while (retries < maxRetries) {
       try {
         final response = await client.get(Uri.parse(url));
@@ -161,7 +160,7 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
         await Future.delayed(Duration(seconds: 1));
       }
     }
-    
+
     throw SocketException('Failed to connect after $maxRetries retries');
   }
 }
@@ -169,6 +168,6 @@ class MovieRemoteDataSourceImpl implements MovieRemoteDataSource {
 // Custom exception for better error handling
 class ConnectionFailureException implements Exception {
   final String message;
-  
+
   ConnectionFailureException(this.message);
 }

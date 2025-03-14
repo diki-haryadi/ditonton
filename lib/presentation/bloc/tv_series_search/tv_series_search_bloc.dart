@@ -4,7 +4,8 @@ import 'package:ditonton/domain/usecases/search_tv_series.dart';
 import 'package:ditonton/presentation/bloc/tv_series_search/tv_series_search_event.dart';
 import 'package:ditonton/presentation/bloc/tv_series_search/tv_series_search_state.dart';
 
-class TvSeriesSearchBloc extends Bloc<TvSeriesSearchEvent, TvSeriesSearchState> {
+class TvSeriesSearchBloc
+    extends Bloc<TvSeriesSearchEvent, TvSeriesSearchState> {
   final SearchTvSeries searchTvSeries;
 
   TvSeriesSearchBloc({required this.searchTvSeries})

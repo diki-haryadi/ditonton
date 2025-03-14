@@ -43,15 +43,19 @@ void main() {
       );
     });
 
-    test('copyWith should create a new object with same values when no parameters are passed', () {
+    test(
+        'copyWith should create a new object with same values when no parameters are passed',
+        () {
       final originalState = MovieDetailState.initial();
       final copiedState = originalState.copyWith();
-      
+
       expect(copiedState, originalState);
       expect(identical(copiedState, originalState), false);
     });
 
-    test('copyWith should create a new object with updated values when parameters are passed', () {
+    test(
+        'copyWith should create a new object with updated values when parameters are passed',
+        () {
       final originalState = MovieDetailState.initial();
       final copiedState = originalState.copyWith(
         movieState: RequestState.Loaded,
@@ -62,7 +66,7 @@ void main() {
         message: 'Message',
         watchlistMessage: 'Watchlist Message',
       );
-      
+
       expect(copiedState, isNot(originalState));
       expect(copiedState.movieState, RequestState.Loaded);
       expect(copiedState.movieDetail, testMovieDetail);
