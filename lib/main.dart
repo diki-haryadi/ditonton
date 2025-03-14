@@ -58,9 +58,6 @@ void main() async {
   await HttpSSLPinning.init();
 
   di.init();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
   runApp(MyApp());
 }
 

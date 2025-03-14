@@ -21,7 +21,7 @@ class HttpSSLPinning {
     final context = SecurityContext(withTrustedRoots: false);
     
     try {
-      // Untuk testing, kita skip loading certificate jika dalam test environment
+      // Untuk testing, skip loading certificate jika dalam test environment
       if (!kTestMode) {
         try {
           final bytes = (await rootBundle.load('certificates/themoviedb.org.pem'))
