@@ -91,6 +91,7 @@ class TvSeriesDetailBloc extends Bloc<TvSeriesDetailEvent, TvSeriesDetailState> 
     Emitter<TvSeriesDetailState> emit,
   ) async {
     final result = await saveWatchlist.execute(event.tvSeriesDetail);
+    final status = await getWatchListStatus.execute(event.tvSeriesDetail.id);
 
     String message = watchlistAddSuccessMessage;
     result.fold(
@@ -102,11 +103,10 @@ class TvSeriesDetailBloc extends Bloc<TvSeriesDetailEvent, TvSeriesDetailState> 
       },
     );
     
-    emit(state.copyWith(watchlistMessage: message));
-    
-    // Update watchlist status after adding
-    final status = await getWatchListStatus.execute(event.tvSeriesDetail.id);
-    emit(state.copyWith(isAddedToWatchlist: status));
+    emit(state.copyWith(
+      watchlistMessage: message,
+      isAddedToWatchlist: status,
+    ));
   }
 
   Future<void> _onRemoveTvSeriesFromWatchlist(

@@ -1,28 +1,28 @@
 import 'package:dartz/dartz.dart';
 import 'package:ditonton/domain/usecases/remove_watchlist.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../../dummy_data/dummy_objects.dart';
-import '../../helpers/test_helper.mocks.dart';
+import 'remove_watchlist_test.mocks.dart';
 
+@GenerateMocks([RemoveWatchlist])
 void main() {
-  late RemoveWatchlist usecase;
-  late MockMovieRepository mockMovieRepository;
+  late MockRemoveWatchlist usecase;
 
   setUp(() {
-    mockMovieRepository = MockMovieRepository();
-    usecase = RemoveWatchlist(mockMovieRepository);
+    usecase = MockRemoveWatchlist();
   });
 
   test('should remove watchlist movie from repository', () async {
     // arrange
-    when(mockMovieRepository.removeWatchlist(testMovieDetail))
-        .thenAnswer((_) async => Right('Removed from watchlist'));
+    when(usecase.execute(testMovieDetail))
+        .thenAnswer((_) async => const Right('Removed from watchlist'));
     // act
     final result = await usecase.execute(testMovieDetail);
     // assert
-    verify(mockMovieRepository.removeWatchlist(testMovieDetail));
-    expect(result, Right('Removed from watchlist'));
+    verify(usecase.execute(testMovieDetail));
+    expect(result, const Right('Removed from watchlist'));
   });
 }

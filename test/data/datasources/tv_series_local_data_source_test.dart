@@ -1,23 +1,32 @@
 import 'package:ditonton/common/exception.dart';
+import 'package:ditonton/data/datasources/db/database_helper.dart';
 import 'package:ditonton/data/datasources/tv_series_local_data_source.dart';
+import 'package:ditonton/data/models/tv_series_table.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../dummy_data/tv_series_dummy_objects.dart';
-import '../../helpers/test_helper.mocks.dart';
+import 'tv_series_local_data_source_test.mocks.dart';
 
+@GenerateMocks([DatabaseHelper])
 void main() {
-  late TvSeriesLocalDataSourceImpl dataSource;
   late MockDatabaseHelper mockDatabaseHelper;
+  late TvSeriesLocalDataSourceImpl dataSource;
 
   setUp(() {
     mockDatabaseHelper = MockDatabaseHelper();
-    dataSource =
-        TvSeriesLocalDataSourceImpl(databaseHelper: mockDatabaseHelper);
+    dataSource = TvSeriesLocalDataSourceImpl(databaseHelper: mockDatabaseHelper);
   });
 
-  group('save watchlist', () {
-    test('should return success message when insert to database is success',
+  final testTvSeriesTable = TvSeriesTable(
+    id: 1,
+    name: 'Test Series',
+    posterPath: '/test.jpg',
+    overview: 'Test overview',
+  );
+
+  group('Insert Watchlist', () {
+    test('should return success message when insert to database is successful',
         () async {
       // arrange
       when(mockDatabaseHelper.insertTvSeriesWatchlist(testTvSeriesTable))
@@ -40,8 +49,8 @@ void main() {
     });
   });
 
-  group('remove watchlist', () {
-    test('should return success message when remove from database is success',
+  group('Remove Watchlist', () {
+    test('should return success message when remove from database is successful',
         () async {
       // arrange
       when(mockDatabaseHelper.removeTvSeriesWatchlist(testTvSeriesTable))
@@ -52,7 +61,8 @@ void main() {
       expect(result, 'Removed from Watchlist');
     });
 
-    test('should throw DatabaseException when remove from database is failed',
+    test(
+        'should throw DatabaseException when remove from database is unsuccessful',
         () async {
       // arrange
       when(mockDatabaseHelper.removeTvSeriesWatchlist(testTvSeriesTable))
@@ -64,13 +74,13 @@ void main() {
     });
   });
 
-  group('Get TV Series Detail By Id', () {
+  group('Get TV Series By Id', () {
     final tId = 1;
 
     test('should return TV Series Detail Table when data is found', () async {
       // arrange
       when(mockDatabaseHelper.getTvSeriesById(tId))
-          .thenAnswer((_) async => testTvSeriesMap);
+          .thenAnswer((_) async => testTvSeriesTable.toJson());
       // act
       final result = await dataSource.getTvSeriesById(tId);
       // assert
@@ -88,11 +98,11 @@ void main() {
     });
   });
 
-  group('get watchlist tv series', () {
+  group('Get Watchlist TV Series', () {
     test('should return list of TvSeriesTable from database', () async {
       // arrange
       when(mockDatabaseHelper.getWatchlistTvSeries())
-          .thenAnswer((_) async => [testTvSeriesMap]);
+          .thenAnswer((_) async => [testTvSeriesTable.toJson()]);
       // act
       final result = await dataSource.getWatchlistTvSeries();
       // assert

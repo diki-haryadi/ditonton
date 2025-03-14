@@ -47,6 +47,8 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
                 movie,
                 state.recommendations,
                 state.isAddedToWatchlist,
+                state.recommendationState,
+                state.message,
               ),
             );
           } else if (state.movieState == RequestState.Error) {
@@ -64,8 +66,10 @@ class DetailContent extends StatelessWidget {
   final MovieDetail movie;
   final List<Movie> recommendations;
   final bool isAddedWatchlist;
+  final RequestState recommendationState;
+  final String message;
 
-  DetailContent(this.movie, this.recommendations, this.isAddedWatchlist);
+  DetailContent(this.movie, this.recommendations, this.isAddedWatchlist, this.recommendationState, this.message);
 
   @override
   Widget build(BuildContext context) {
@@ -127,14 +131,20 @@ class DetailContent extends StatelessWidget {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(content: Text(message)));
                                 } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text(message)));
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        content: Text(message),
+                                      );
+                                    },
+                                  );
                                 }
                               },
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  !isAddedWatchlist
+                                  isAddedWatchlist
                                       ? Icon(Icons.check)
                                       : Icon(Icons.add),
                                   Text('Watchlist'),
@@ -174,18 +184,16 @@ class DetailContent extends StatelessWidget {
                               'Recommendations',
                               style: kHeading6,
                             ),
+                            const SizedBox(height: 8),
                             BlocBuilder<MovieDetailBloc, MovieDetailState>(
                               builder: (context, state) {
-                                if (state.recommendationState ==
-                                    RequestState.Loading) {
+                                if (state.recommendationState == RequestState.Loading) {
                                   return Center(
                                     child: CircularProgressIndicator(),
                                   );
-                                } else if (state.recommendationState ==
-                                    RequestState.Error) {
+                                } else if (state.recommendationState == RequestState.Error) {
                                   return Text(state.message);
-                                } else if (state.recommendationState ==
-                                    RequestState.Loaded) {
+                                } else if (state.recommendationState == RequestState.Loaded) {
                                   return Container(
                                     height: 150,
                                     child: ListView.builder(
@@ -207,16 +215,11 @@ class DetailContent extends StatelessWidget {
                                                 Radius.circular(8),
                                               ),
                                               child: CachedNetworkImage(
-                                                imageUrl:
-                                                    'https://image.tmdb.org/t/p/w500${movie.posterPath}',
-                                                placeholder: (context, url) =>
-                                                    Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
+                                                imageUrl: 'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+                                                placeholder: (context, url) => Center(
+                                                  child: CircularProgressIndicator(),
                                                 ),
-                                                errorWidget:
-                                                    (context, url, error) =>
-                                                        Icon(Icons.error),
+                                                errorWidget: (context, url, error) => Icon(Icons.error),
                                               ),
                                             ),
                                           ),
@@ -246,9 +249,7 @@ class DetailContent extends StatelessWidget {
                 ),
               );
             },
-            // initialChildSize: 0.5,
             minChildSize: 0.25,
-            // maxChildSize: 1.0,
           ),
         ),
         Padding(

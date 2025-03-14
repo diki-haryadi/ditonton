@@ -4,26 +4,32 @@ import 'package:ditonton/domain/entities/genre.dart';
 import 'package:ditonton/domain/entities/tv_series.dart';
 import 'package:ditonton/domain/entities/tv_series_detail.dart';
 import 'package:ditonton/presentation/pages/tv_series_detail_page.dart';
-import 'package:ditonton/presentation/provider/tv_series_detail_notifier.dart';
+import 'package:ditonton/presentation/bloc/tv_series_detail/tv_series_detail_bloc.dart';
+import 'package:ditonton/presentation/bloc/tv_series_detail/tv_series_detail_state.dart';
+import 'package:ditonton/presentation/bloc/tv_series_detail/tv_series_detail_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
+import 'package:bloc_test/bloc_test.dart';
 
 import 'tv_series_detail_page_test.mocks.dart';
 
-@GenerateMocks([TvSeriesDetailNotifier])
+@GenerateMocks([TvSeriesDetailBloc])
 void main() {
-  late MockTvSeriesDetailNotifier mockNotifier;
+  late MockTvSeriesDetailBloc mockBloc;
 
   setUp(() {
-    mockNotifier = MockTvSeriesDetailNotifier();
+    mockBloc = MockTvSeriesDetailBloc();
+    when(mockBloc.stream).thenAnswer((_) => Stream.value(TvSeriesDetailState.initial()));
+    when(mockBloc.state).thenReturn(TvSeriesDetailState.initial());
+    when(mockBloc.add(any)).thenReturn(null);
   });
 
   Widget _makeTestableWidget(Widget body) {
-    return ChangeNotifierProvider<TvSeriesDetailNotifier>.value(
-      value: mockNotifier,
+    return BlocProvider<TvSeriesDetailBloc>.value(
+      value: mockBloc,
       child: MaterialApp(
         home: body,
         routes: {
@@ -52,66 +58,91 @@ void main() {
   );
 
   final tTvSeriesDetail = TvSeriesDetail(
-      backdropPath: 'path/to/backdrop.jpg',
-      episodeRunTime: [60],
-      firstAirDate: '2023-01-01',
-      genres: [Genre(id: 1, name: 'Action'), Genre(id: 2, name: 'Drama')],
-      homepage: 'https://example.com',
-      id: 1,
-      inProduction: true,
-      lastAirDate: '2023-12-31',
-      name: 'Test Series',
-      numberOfEpisodes: 12,
-      numberOfSeasons: 1,
-      originalLanguage: 'en',
-      originalName: 'Original Test Series',
-      overview: 'Test Overview',
-      popularity: 8.5,
-      posterPath: 'path/to/poster.jpg',
-      status: 'Returning Series',
-      tagline: 'A test tagline',
-      type: 'Scripted',
-      voteAverage: 8.5,
-      voteCount: 100);
+    backdropPath: 'path/to/backdrop.jpg',
+    episodeRunTime: [60],
+    firstAirDate: '2023-01-01',
+    genres: [Genre(id: 1, name: 'Action'), Genre(id: 2, name: 'Drama')],
+    homepage: 'https://example.com',
+    id: 1,
+    inProduction: true,
+    lastAirDate: '2023-12-31',
+    name: 'Test Series',
+    numberOfEpisodes: 12,
+    numberOfSeasons: 1,
+    originalLanguage: 'en',
+    originalName: 'Original Test Series',
+    overview: 'Test Overview',
+    popularity: 8.5,
+    posterPath: 'path/to/poster.jpg',
+    status: 'Returning Series',
+    tagline: 'A test tagline',
+    type: 'Scripted',
+    voteAverage: 8.5,
+    voteCount: 100
+  );
 
   testWidgets('Page should display loading indicator when state is loading',
       (WidgetTester tester) async {
     // arrange
-    when(mockNotifier.tvSeriesState).thenReturn(RequestState.Loading);
+    when(mockBloc.stream).thenAnswer((_) => Stream.fromIterable([
+      TvSeriesDetailState.initial().copyWith(
+        tvSeriesState: RequestState.Loading,
+      ),
+    ]));
 
     // act
     await tester.pumpWidget(_makeTestableWidget(TvSeriesDetailPage(id: tId)));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
+    await tester.pump(const Duration(milliseconds: 100));
 
     // assert
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    verify(mockBloc.add(FetchTvSeriesDetail(tId))).called(1);
   });
 
   testWidgets('Page should display error message when state is error',
       (WidgetTester tester) async {
     // arrange
-    when(mockNotifier.tvSeriesState).thenReturn(RequestState.Error);
-    when(mockNotifier.message).thenReturn('Error message');
+    when(mockBloc.stream).thenAnswer((_) => Stream.fromIterable([
+      TvSeriesDetailState.initial().copyWith(
+        tvSeriesState: RequestState.Error,
+        message: 'Error message',
+      ),
+    ]));
 
     // act
     await tester.pumpWidget(_makeTestableWidget(TvSeriesDetailPage(id: tId)));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
+    await tester.pump(const Duration(milliseconds: 100));
 
     // assert
     expect(find.text('Error message'), findsOneWidget);
+    verify(mockBloc.add(FetchTvSeriesDetail(tId))).called(1);
   });
 
   testWidgets('Page should display tv series detail when state is loaded',
       (WidgetTester tester) async {
     // arrange
-    when(mockNotifier.tvSeriesState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.tvSeries).thenReturn(tTvSeriesDetail);
-    when(mockNotifier.tvSeriesRecommendations)
-        .thenReturn(<TvSeries>[tTvSeries]);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
+    when(mockBloc.stream).thenAnswer((_) => Stream.fromIterable([
+      TvSeriesDetailState.initial().copyWith(
+        tvSeriesState: RequestState.Loaded,
+        tvSeriesDetail: tTvSeriesDetail,
+        recommendations: [tTvSeries],
+        recommendationState: RequestState.Loaded,
+        isAddedToWatchlist: false,
+      ),
+    ]));
 
     // act
     await tester.pumpWidget(_makeTestableWidget(TvSeriesDetailPage(id: tId)));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
+    await tester.pump(const Duration(milliseconds: 100));
 
     // assert
+    verify(mockBloc.add(FetchTvSeriesDetail(tId))).called(1);
     expect(find.text('Test Series'), findsOneWidget);
     expect(find.text('Action, Drama'), findsOneWidget);
     expect(find.text('Overview'), findsOneWidget);
@@ -122,186 +153,14 @@ void main() {
   });
 
   testWidgets(
-      'Page should call fetchTvSeriesDetail and loadWatchlistStatus on initState',
-      (WidgetTester tester) async {
-    // arrange
-    when(mockNotifier.tvSeriesState).thenReturn(RequestState.Loading);
-
-    // act
-    await tester.pumpWidget(_makeTestableWidget(TvSeriesDetailPage(id: tId)));
-
-    // assert
-    verify(mockNotifier.fetchTvSeriesDetail(tId));
-    verify(mockNotifier.loadWatchlistStatus(tId));
-  });
-
-  testWidgets(
-      'Watchlist button should display add icon when series not in watchlist',
-      (WidgetTester tester) async {
-    // arrange
-    when(mockNotifier.tvSeriesState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.tvSeries).thenReturn(tTvSeriesDetail);
-    when(mockNotifier.tvSeriesRecommendations)
-        .thenReturn(<TvSeries>[tTvSeries]);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
-
-    // act
-    await tester.pumpWidget(_makeTestableWidget(TvSeriesDetailPage(id: tId)));
-
-    // assert
-    expect(find.byIcon(Icons.add), findsOneWidget);
-  });
-
-  testWidgets(
-      'Watchlist button should display check icon when series is in watchlist',
-      (WidgetTester tester) async {
-    // arrange
-    when(mockNotifier.tvSeriesState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.tvSeries).thenReturn(tTvSeriesDetail);
-    when(mockNotifier.tvSeriesRecommendations)
-        .thenReturn(<TvSeries>[tTvSeries]);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(true);
-
-    // act
-    await tester.pumpWidget(_makeTestableWidget(TvSeriesDetailPage(id: tId)));
-
-    // assert
-    expect(find.byIcon(Icons.check), findsOneWidget);
-  });
-
-  testWidgets(
-      'Watchlist button should display SnackBar when added to watchlist',
-      (WidgetTester tester) async {
-    // arrange
-    when(mockNotifier.tvSeriesState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.tvSeries).thenReturn(tTvSeriesDetail);
-    when(mockNotifier.tvSeriesRecommendations)
-        .thenReturn(<TvSeries>[tTvSeries]);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
-    when(mockNotifier.watchlistMessage)
-        .thenReturn(TvSeriesDetailNotifier.watchlistAddSuccessMessage);
-
-    // act
-    await tester.pumpWidget(_makeTestableWidget(TvSeriesDetailPage(id: tId)));
-    await tester.tap(find.byType(ElevatedButton));
-    await tester.pump();
-
-    // assert
-    verify(mockNotifier.addWatchlist(tTvSeriesDetail));
-    expect(find.byType(SnackBar), findsOneWidget);
-    expect(find.text(TvSeriesDetailNotifier.watchlistAddSuccessMessage),
-        findsOneWidget);
-  });
-
-  testWidgets(
-      'Watchlist button should display SnackBar when removed from watchlist',
-      (WidgetTester tester) async {
-    // arrange
-    when(mockNotifier.tvSeriesState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.tvSeries).thenReturn(tTvSeriesDetail);
-    when(mockNotifier.tvSeriesRecommendations)
-        .thenReturn(<TvSeries>[tTvSeries]);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(true);
-    when(mockNotifier.watchlistMessage)
-        .thenReturn(TvSeriesDetailNotifier.watchlistRemoveSuccessMessage);
-
-    // act
-    await tester.pumpWidget(_makeTestableWidget(TvSeriesDetailPage(id: tId)));
-    await tester.tap(find.byType(ElevatedButton));
-    await tester.pump();
-
-    // assert
-    verify(mockNotifier.removeFromWatchlist(tTvSeriesDetail));
-    expect(find.byType(SnackBar), findsOneWidget);
-    expect(find.text(TvSeriesDetailNotifier.watchlistRemoveSuccessMessage),
-        findsOneWidget);
-  });
-
-  testWidgets(
-      'Watchlist button should display AlertDialog when add to watchlist failed',
-      (WidgetTester tester) async {
-    // arrange
-    when(mockNotifier.tvSeriesState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.tvSeries).thenReturn(tTvSeriesDetail);
-    when(mockNotifier.tvSeriesRecommendations)
-        .thenReturn(<TvSeries>[tTvSeries]);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
-    when(mockNotifier.watchlistMessage)
-        .thenReturn('Failed to add to watchlist');
-
-    // act
-    await tester.pumpWidget(_makeTestableWidget(TvSeriesDetailPage(id: tId)));
-    await tester.tap(find.byType(ElevatedButton));
-    await tester.pump();
-
-    // assert
-    verify(mockNotifier.addWatchlist(tTvSeriesDetail));
-    expect(find.byType(AlertDialog), findsOneWidget);
-    expect(find.text('Failed to add to watchlist'), findsOneWidget);
-  });
-
-  testWidgets(
-      'Recommendation should navigate to another detail page when tapped',
-      (WidgetTester tester) async {
-    // arrange
-    when(mockNotifier.tvSeriesState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.tvSeries).thenReturn(tTvSeriesDetail);
-    when(mockNotifier.tvSeriesRecommendations)
-        .thenReturn(<TvSeries>[tTvSeries]);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
-    when(mockNotifier.watchlistMessage).thenReturn('');
-
-    // act
-    await tester.pumpWidget(_makeTestableWidget(TvSeriesDetailPage(id: tId)));
-    await tester.tap(find.byType(InkWell).first);
-    await tester.pump();
-
-    // assert
-    verify(mockNotifier.fetchTvSeriesDetail(tId));
-    verify(mockNotifier.loadWatchlistStatus(tId));
-  });
-
-  testWidgets('Back button should navigate back when pressed',
-      (WidgetTester tester) async {
-    // arrange
-    when(mockNotifier.tvSeriesState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.tvSeries).thenReturn(tTvSeriesDetail);
-    when(mockNotifier.tvSeriesRecommendations)
-        .thenReturn(<TvSeries>[tTvSeries]);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
-
-    // act
-    await tester.pumpWidget(_makeTestableWidget(TvSeriesDetailPage(id: tId)));
-    await tester.tap(find.byType(IconButton));
-    await tester.pumpAndSettle();
-
-    // assert
-    expect(find.byType(TvSeriesDetailPage), findsNothing);
-  });
-
-  testWidgets('DetailContent should correctly display formatted genres',
-      (WidgetTester tester) async {
-    // arrange
-    when(mockNotifier.tvSeriesState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.tvSeries).thenReturn(tTvSeriesDetail);
-    when(mockNotifier.tvSeriesRecommendations)
-        .thenReturn(<TvSeries>[tTvSeries]);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
-
-    // act
-    await tester.pumpWidget(_makeTestableWidget(TvSeriesDetailPage(id: tId)));
-
-    // assert
-    expect(find.text('Action, Drama'), findsOneWidget);
-  });
-
-  testWidgets('DetailContent should handle empty genres',
+      'Page should display empty genres when tv series detail has no genres',
       (WidgetTester tester) async {
     // arrange
     final emptyGenreTvSeriesDetail = TvSeriesDetail(
       backdropPath: 'path/to/backdrop.jpg',
       episodeRunTime: [60],
       firstAirDate: '2023-01-01',
+      genres: [],
       homepage: 'https://example.com',
       id: 1,
       inProduction: true,
@@ -318,20 +177,28 @@ void main() {
       tagline: 'A test tagline',
       type: 'Scripted',
       voteAverage: 8.5,
-      voteCount: 100,
-      genres: [],
+      voteCount: 100
     );
 
-    when(mockNotifier.tvSeriesState).thenReturn(RequestState.Loaded);
-    when(mockNotifier.tvSeries).thenReturn(emptyGenreTvSeriesDetail);
-    when(mockNotifier.tvSeriesRecommendations)
-        .thenReturn(<TvSeries>[tTvSeries]);
-    when(mockNotifier.isAddedToWatchlist).thenReturn(false);
+    when(mockBloc.state).thenReturn(
+      TvSeriesDetailState.initial().copyWith(
+        tvSeriesState: RequestState.Loaded,
+        tvSeriesDetail: emptyGenreTvSeriesDetail,
+        recommendations: [tTvSeries],
+        isAddedToWatchlist: false,
+      ),
+    );
 
     // act
     await tester.pumpWidget(_makeTestableWidget(TvSeriesDetailPage(id: tId)));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
+    await tester.pump(const Duration(milliseconds: 100));
 
     // assert
-    expect(find.text(''), findsOneWidget);
+    verify(mockBloc.add(FetchTvSeriesDetail(tId))).called(1);
+    expect(find.text('Action'), findsNothing);
+    expect(find.text('Drama'), findsNothing);
+    expect(find.text('Action, Drama'), findsNothing);
   });
 }

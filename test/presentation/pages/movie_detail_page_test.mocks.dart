@@ -3,21 +3,21 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i12;
-import 'dart:ui' as _i13;
+import 'dart:async' as _i9;
 
-import 'package:ditonton/common/state_enum.dart' as _i9;
-import 'package:ditonton/domain/entities/movie.dart' as _i10;
-import 'package:ditonton/domain/entities/movie_detail.dart' as _i7;
+import 'package:bloc/bloc.dart' as _i11;
 import 'package:ditonton/domain/usecases/get_movie_detail.dart' as _i2;
 import 'package:ditonton/domain/usecases/get_movie_recommendations.dart' as _i3;
 import 'package:ditonton/domain/usecases/get_watchlist_status.dart' as _i4;
 import 'package:ditonton/domain/usecases/remove_watchlist.dart' as _i6;
 import 'package:ditonton/domain/usecases/save_watchlist.dart' as _i5;
-import 'package:ditonton/presentation/provider/movie_detail_notifier.dart'
+import 'package:ditonton/presentation/bloc/movie_detail/movie_detail_bloc.dart'
     as _i8;
+import 'package:ditonton/presentation/bloc/movie_detail/movie_detail_event.dart'
+    as _i10;
+import 'package:ditonton/presentation/bloc/movie_detail/movie_detail_state.dart'
+    as _i7;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i11;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -62,17 +62,17 @@ class _FakeRemoveWatchlist_4 extends _i1.SmartFake
     : super(parent, parentInvocation);
 }
 
-class _FakeMovieDetail_5 extends _i1.SmartFake implements _i7.MovieDetail {
-  _FakeMovieDetail_5(Object parent, Invocation parentInvocation)
+class _FakeMovieDetailState_5 extends _i1.SmartFake
+    implements _i7.MovieDetailState {
+  _FakeMovieDetailState_5(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
-/// A class which mocks [MovieDetailNotifier].
+/// A class which mocks [MovieDetailBloc].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockMovieDetailNotifier extends _i1.Mock
-    implements _i8.MovieDetailNotifier {
-  MockMovieDetailNotifier() {
+class MockMovieDetailBloc extends _i1.Mock implements _i8.MovieDetailBloc {
+  MockMovieDetailBloc() {
     _i1.throwOnMissingStub(this);
   }
 
@@ -132,129 +132,89 @@ class MockMovieDetailNotifier extends _i1.Mock
           as _i6.RemoveWatchlist);
 
   @override
-  _i7.MovieDetail get movie =>
+  _i7.MovieDetailState get state =>
       (super.noSuchMethod(
-            Invocation.getter(#movie),
-            returnValue: _FakeMovieDetail_5(this, Invocation.getter(#movie)),
-          )
-          as _i7.MovieDetail);
-
-  @override
-  _i9.RequestState get movieState =>
-      (super.noSuchMethod(
-            Invocation.getter(#movieState),
-            returnValue: _i9.RequestState.Empty,
-          )
-          as _i9.RequestState);
-
-  @override
-  List<_i10.Movie> get movieRecommendations =>
-      (super.noSuchMethod(
-            Invocation.getter(#movieRecommendations),
-            returnValue: <_i10.Movie>[],
-          )
-          as List<_i10.Movie>);
-
-  @override
-  _i9.RequestState get recommendationState =>
-      (super.noSuchMethod(
-            Invocation.getter(#recommendationState),
-            returnValue: _i9.RequestState.Empty,
-          )
-          as _i9.RequestState);
-
-  @override
-  String get message =>
-      (super.noSuchMethod(
-            Invocation.getter(#message),
-            returnValue: _i11.dummyValue<String>(
+            Invocation.getter(#state),
+            returnValue: _FakeMovieDetailState_5(
               this,
-              Invocation.getter(#message),
+              Invocation.getter(#state),
             ),
           )
-          as String);
+          as _i7.MovieDetailState);
 
   @override
-  bool get isAddedToWatchlist =>
+  _i9.Stream<_i7.MovieDetailState> get stream =>
       (super.noSuchMethod(
-            Invocation.getter(#isAddedToWatchlist),
-            returnValue: false,
+            Invocation.getter(#stream),
+            returnValue: _i9.Stream<_i7.MovieDetailState>.empty(),
           )
+          as _i9.Stream<_i7.MovieDetailState>);
+
+  @override
+  bool get isClosed =>
+      (super.noSuchMethod(Invocation.getter(#isClosed), returnValue: false)
           as bool);
 
   @override
-  String get watchlistMessage =>
-      (super.noSuchMethod(
-            Invocation.getter(#watchlistMessage),
-            returnValue: _i11.dummyValue<String>(
-              this,
-              Invocation.getter(#watchlistMessage),
-            ),
-          )
-          as String);
-
-  @override
-  bool get hasListeners =>
-      (super.noSuchMethod(Invocation.getter(#hasListeners), returnValue: false)
-          as bool);
-
-  @override
-  _i12.Future<void> fetchMovieDetail(int? id) =>
-      (super.noSuchMethod(
-            Invocation.method(#fetchMovieDetail, [id]),
-            returnValue: _i12.Future<void>.value(),
-            returnValueForMissingStub: _i12.Future<void>.value(),
-          )
-          as _i12.Future<void>);
-
-  @override
-  _i12.Future<void> addWatchlist(_i7.MovieDetail? movie) =>
-      (super.noSuchMethod(
-            Invocation.method(#addWatchlist, [movie]),
-            returnValue: _i12.Future<void>.value(),
-            returnValueForMissingStub: _i12.Future<void>.value(),
-          )
-          as _i12.Future<void>);
-
-  @override
-  _i12.Future<void> removeFromWatchlist(_i7.MovieDetail? movie) =>
-      (super.noSuchMethod(
-            Invocation.method(#removeFromWatchlist, [movie]),
-            returnValue: _i12.Future<void>.value(),
-            returnValueForMissingStub: _i12.Future<void>.value(),
-          )
-          as _i12.Future<void>);
-
-  @override
-  _i12.Future<void> loadWatchlistStatus(int? id) =>
-      (super.noSuchMethod(
-            Invocation.method(#loadWatchlistStatus, [id]),
-            returnValue: _i12.Future<void>.value(),
-            returnValueForMissingStub: _i12.Future<void>.value(),
-          )
-          as _i12.Future<void>);
-
-  @override
-  void addListener(_i13.VoidCallback? listener) => super.noSuchMethod(
-    Invocation.method(#addListener, [listener]),
+  void add(_i10.MovieDetailEvent? event) => super.noSuchMethod(
+    Invocation.method(#add, [event]),
     returnValueForMissingStub: null,
   );
 
   @override
-  void removeListener(_i13.VoidCallback? listener) => super.noSuchMethod(
-    Invocation.method(#removeListener, [listener]),
+  void onEvent(_i10.MovieDetailEvent? event) => super.noSuchMethod(
+    Invocation.method(#onEvent, [event]),
     returnValueForMissingStub: null,
   );
 
   @override
-  void dispose() => super.noSuchMethod(
-    Invocation.method(#dispose, []),
+  void emit(_i7.MovieDetailState? state) => super.noSuchMethod(
+    Invocation.method(#emit, [state]),
     returnValueForMissingStub: null,
   );
 
   @override
-  void notifyListeners() => super.noSuchMethod(
-    Invocation.method(#notifyListeners, []),
+  void on<E extends _i10.MovieDetailEvent>(
+    _i11.EventHandler<E, _i7.MovieDetailState>? handler, {
+    _i11.EventTransformer<E>? transformer,
+  }) => super.noSuchMethod(
+    Invocation.method(#on, [handler], {#transformer: transformer}),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void onTransition(
+    _i11.Transition<_i10.MovieDetailEvent, _i7.MovieDetailState>? transition,
+  ) => super.noSuchMethod(
+    Invocation.method(#onTransition, [transition]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  _i9.Future<void> close() =>
+      (super.noSuchMethod(
+            Invocation.method(#close, []),
+            returnValue: _i9.Future<void>.value(),
+            returnValueForMissingStub: _i9.Future<void>.value(),
+          )
+          as _i9.Future<void>);
+
+  @override
+  void onChange(_i11.Change<_i7.MovieDetailState>? change) =>
+      super.noSuchMethod(
+        Invocation.method(#onChange, [change]),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void addError(Object? error, [StackTrace? stackTrace]) => super.noSuchMethod(
+    Invocation.method(#addError, [error, stackTrace]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void onError(Object? error, StackTrace? stackTrace) => super.noSuchMethod(
+    Invocation.method(#onError, [error, stackTrace]),
     returnValueForMissingStub: null,
   );
 }
