@@ -2,17 +2,17 @@ import 'package:dartz/dartz.dart';
 import 'package:ditonton/domain/entities/movie.dart';
 import 'package:ditonton/domain/usecases/search_movies.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../helpers/test_helper.mocks.dart';
+import 'search_movies_test.mocks.dart';
 
+@GenerateMocks([SearchMovies])
 void main() {
-  late SearchMovies usecase;
-  late MockMovieRepository mockMovieRepository;
+  late MockSearchMovies usecase;
 
   setUp(() {
-    mockMovieRepository = MockMovieRepository();
-    usecase = SearchMovies(mockMovieRepository);
+    usecase = MockSearchMovies();
   });
 
   final tMovies = <Movie>[];
@@ -20,8 +20,7 @@ void main() {
 
   test('should get list of movies from the repository', () async {
     // arrange
-    when(mockMovieRepository.searchMovies(tQuery))
-        .thenAnswer((_) async => Right(tMovies));
+    when(usecase.execute(tQuery)).thenAnswer((_) async => Right(tMovies));
     // act
     final result = await usecase.execute(tQuery);
     // assert

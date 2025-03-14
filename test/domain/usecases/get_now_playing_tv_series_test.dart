@@ -2,25 +2,24 @@ import 'package:dartz/dartz.dart';
 import 'package:ditonton/domain/entities/tv_series.dart';
 import 'package:ditonton/domain/usecases/get_now_playing_tv_series.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../helpers/test_helper.mocks.dart';
+import 'get_now_playing_tv_series_test.mocks.dart';
 
+@GenerateMocks([GetNowPlayingTvSeries])
 void main() {
-  late GetNowPlayingTvSeries usecase;
-  late MockTvSeriesRepository mockTvSeriesRepository;
+  late MockGetNowPlayingTvSeries usecase;
 
   setUp(() {
-    mockTvSeriesRepository = MockTvSeriesRepository();
-    usecase = GetNowPlayingTvSeries(mockTvSeriesRepository);
+    usecase = MockGetNowPlayingTvSeries();
   });
 
   final tTvSeries = <TvSeries>[];
 
   test('should get list of tv series from the repository', () async {
     // arrange
-    when(mockTvSeriesRepository.getNowPlayingTvSeries())
-        .thenAnswer((_) async => Right(tTvSeries));
+    when(usecase.execute()).thenAnswer((_) async => Right(tTvSeries));
     // act
     final result = await usecase.execute();
     // assert

@@ -1,22 +1,32 @@
 import 'package:ditonton/common/exception.dart';
+import 'package:ditonton/data/datasources/db/database_helper.dart';
 import 'package:ditonton/data/datasources/movie_local_data_source.dart';
+import 'package:ditonton/data/models/movie_table.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../dummy_data/dummy_objects.dart';
-import '../../helpers/test_helper.mocks.dart';
+import 'movie_local_data_source_test.mocks.dart';
 
+@GenerateMocks([DatabaseHelper])
 void main() {
-  late MovieLocalDataSourceImpl dataSource;
   late MockDatabaseHelper mockDatabaseHelper;
+  late MovieLocalDataSourceImpl dataSource;
 
   setUp(() {
     mockDatabaseHelper = MockDatabaseHelper();
     dataSource = MovieLocalDataSourceImpl(databaseHelper: mockDatabaseHelper);
   });
 
-  group('save watchlist', () {
-    test('should return success message when insert to database is success',
+  final testMovieTable = MovieTable(
+    id: 1,
+    title: 'Test Movie',
+    posterPath: '/test.jpg',
+    overview: 'Test overview',
+  );
+
+  group('Insert Watchlist', () {
+    test('should return success message when insert to database is successful',
         () async {
       // arrange
       when(mockDatabaseHelper.insertWatchlist(testMovieTable))
@@ -39,8 +49,8 @@ void main() {
     });
   });
 
-  group('remove watchlist', () {
-    test('should return success message when remove from database is success',
+  group('Remove Watchlist', () {
+    test('should return success message when remove from database is successful',
         () async {
       // arrange
       when(mockDatabaseHelper.removeWatchlist(testMovieTable))
@@ -51,7 +61,8 @@ void main() {
       expect(result, 'Removed from Watchlist');
     });
 
-    test('should throw DatabaseException when remove from database is failed',
+    test(
+        'should throw DatabaseException when remove from database is unsuccessful',
         () async {
       // arrange
       when(mockDatabaseHelper.removeWatchlist(testMovieTable))
@@ -63,13 +74,13 @@ void main() {
     });
   });
 
-  group('Get Movie Detail By Id', () {
+  group('Get Movie By Id', () {
     final tId = 1;
 
     test('should return Movie Detail Table when data is found', () async {
       // arrange
       when(mockDatabaseHelper.getMovieById(tId))
-          .thenAnswer((_) async => testMovieMap);
+          .thenAnswer((_) async => testMovieTable.toJson());
       // act
       final result = await dataSource.getMovieById(tId);
       // assert
@@ -86,11 +97,11 @@ void main() {
     });
   });
 
-  group('get watchlist movies', () {
+  group('Get Watchlist Movies', () {
     test('should return list of MovieTable from database', () async {
       // arrange
       when(mockDatabaseHelper.getWatchlistMovies())
-          .thenAnswer((_) async => [testMovieMap]);
+          .thenAnswer((_) async => [testMovieTable.toJson()]);
       // act
       final result = await dataSource.getWatchlistMovies();
       // assert

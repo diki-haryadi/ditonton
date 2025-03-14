@@ -119,7 +119,7 @@ class TvSeriesListBloc extends Bloc<TvSeriesListEvent, TvSeriesListState> {
     if (failure is ConnectionFailure) {
       return 'Failed to connect to the network';
     } else if (failure is ServerFailure) {
-      return 'Failed to connect to the server';
+      return 'Server Failure';
     } else {
       return 'Unexpected error';
     }
